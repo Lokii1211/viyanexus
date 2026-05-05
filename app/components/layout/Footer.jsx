@@ -25,8 +25,8 @@ export default function Footer() {
           {/* Brand */}
           <div style={{ maxWidth: "280px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "24px" }}>
-              <div style={{ width: "24px", height: "24px", borderRadius: "50%", overflow: "hidden", background: "#050505", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <Image src="/vn-logo.png" alt="Logo" width={20} height={20} style={{ height: "20px", width: "20px", mixBlendMode: "lighten" }} />
+              <div style={{ width: "32px", height: "32px", borderRadius: "50%", overflow: "hidden", background: "#111318", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, border: "1px solid rgba(201,145,10,0.2)" }}>
+                <Image src="/vn-logo.png" alt="Logo" width={32} height={32} style={{ width: "32px", height: "32px", objectFit: "cover", mixBlendMode: "screen" }} />
               </div>
               <span style={{ fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: 600, color: "white", textTransform: "uppercase", letterSpacing: "-0.01em" }}>VIYA NEXUS</span>
             </div>
