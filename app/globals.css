@@ -65,7 +65,7 @@
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; background: var(--bg-void); font-size: 16px; }
+html { scroll-behavior: smooth; background: var(--bg-void); font-size: 16px; overflow-x: hidden; }
 
 body {
   background: var(--bg-base);

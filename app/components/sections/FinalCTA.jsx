@@ -9,22 +9,6 @@ export default function FinalCTA() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
-  /* Shared button style — BOTH have 2px border so they're identical size */
-  const btn = {
-    padding: "13px 28px",
-    fontWeight: 700,
-    fontSize: "12px",
-    fontFamily: "var(--font-mono)",
-    textTransform: "uppercase",
-    letterSpacing: "0.1em",
-    textDecoration: "none",
-    display: "inline-flex",
-    alignItems: "center",
-    gap: "8px",
-    border: "2px solid transparent",
-    whiteSpace: "nowrap",
-  };
-
   return (
     <section style={{ position: "relative", padding: "80px 0", overflow: "hidden" }} ref={ref}>
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #8B6000, #C9910A 60%, #E8B84B)" }} />
@@ -40,14 +24,11 @@ export default function FinalCTA() {
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.25 }}
           className="finalcta-btns">
-          {/* Primary — has invisible border so size matches WhatsApp */}
-          <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="cta-btn-animate cta-pulse"
-            style={{ ...btn, background: "#06080D", color: "#E8B84B", borderColor: "#06080D" }}>
+          {/* Both buttons use .cta-final class for identical sizing */}
+          <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="cta-final cta-btn-animate cta-pulse cta-primary">
             Book Free Call <ArrowRight size={14} />
           </a>
-          {/* Secondary — visible border, same total size */}
-          <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="cta-btn-animate"
-            style={{ ...btn, background: "transparent", color: "#06080D", borderColor: "#06080D" }}>
+          <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="cta-final cta-btn-animate cta-secondary">
             <MessageCircle size={14} /> WhatsApp Us
           </a>
         </motion.div>
@@ -64,6 +45,30 @@ export default function FinalCTA() {
           gap: 12px;
           justify-content: center;
           align-items: center;
+        }
+        .cta-final {
+          width: 200px;
+          height: 48px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          font-family: var(--font-mono);
+          font-size: 12px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          text-decoration: none;
+          white-space: nowrap;
+        }
+        .cta-primary {
+          background: #06080D;
+          color: #E8B84B;
+        }
+        .cta-secondary {
+          background: transparent;
+          color: #06080D;
+          box-shadow: inset 0 0 0 2px #06080D;
         }
         @media (min-width: 640px) {
           .finalcta-btns { flex-direction: row; gap: 14px; }
