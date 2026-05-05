@@ -32,9 +32,9 @@ export default function Navbar() {
       <div className="container-main" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", height: "80px" }}>
         {/* Logo — NO rectangle box, clean brandable look */}
         <a href="#" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none", position: "relative", zIndex: 50 }}>
-          <div style={{ width: "40px", height: "40px", borderRadius: "50%", overflow: "hidden", background: "#06080D", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, border: "1.5px solid rgba(201,145,10,0.4)", boxShadow: "0 0 12px rgba(201,145,10,0.1)" }}>
-            <Image src="/vn-logo.png" alt="Viya Nexus Logo" width={34} height={34}
-              style={{ height: "34px", width: "34px", objectFit: "contain", mixBlendMode: "lighten" }} loading="eager" />
+          <div style={{ width: "42px", height: "42px", borderRadius: "50%", overflow: "hidden", background: "#0A0C12", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, border: "1.5px solid rgba(201,145,10,0.35)", boxShadow: "0 0 16px rgba(201,145,10,0.08)", padding: "4px" }}>
+            <Image src="/vn-logo.png" alt="Viya Nexus Logo" width={30} height={30}
+              style={{ height: "30px", width: "30px", objectFit: "contain", mixBlendMode: "lighten", display: "block" }} loading="eager" />
           </div>
           <span style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: 700, letterSpacing: "-0.01em", color: "#C9910A" }}>VIYA NEXUS</span>
         </a>

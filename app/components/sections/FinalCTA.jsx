@@ -11,7 +11,6 @@ export default function FinalCTA() {
 
   return (
     <section style={{ position: "relative", padding: "80px 0", overflow: "hidden" }} ref={ref}>
-      {/* Gold gradient background */}
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #8B6000, #C9910A 60%, #E8B84B)" }} />
 
       <div className="container-main" style={{ position: "relative", zIndex: 10, textAlign: "center" }}>
@@ -26,12 +25,12 @@ export default function FinalCTA() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.25 }}
           className="finalcta-btns">
           <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="cta-btn-animate cta-pulse"
-            style={{ background: "#06080D", color: "#E8B84B", padding: "16px 36px", fontWeight: 700, fontSize: "14px", display: "inline-flex", alignItems: "center", gap: "10px", textDecoration: "none", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
-            Book Free Call <ArrowRight size={16} />
+            style={{ background: "#06080D", color: "#E8B84B", padding: "14px 32px", fontWeight: 700, fontSize: "13px", display: "inline-flex", alignItems: "center", gap: "8px", textDecoration: "none", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.1em", height: "48px", boxSizing: "border-box" }}>
+            Book Free Call <ArrowRight size={14} />
           </a>
           <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="cta-btn-animate"
-            style={{ background: "rgba(6,8,13,0.15)", color: "#06080D", padding: "16px 28px", fontWeight: 700, fontSize: "13px", display: "inline-flex", alignItems: "center", gap: "8px", textDecoration: "none", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.08em", borderTop: "2px solid #06080D", borderLeft: "2px solid #06080D", borderRight: "2px solid #06080D", borderBottom: "2px solid #06080D" }}>
-            <MessageCircle size={16} /> WhatsApp Us
+            style={{ background: "transparent", color: "#06080D", padding: "14px 32px", fontWeight: 700, fontSize: "13px", display: "inline-flex", alignItems: "center", gap: "8px", textDecoration: "none", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.1em", borderTop: "2px solid #06080D", borderLeft: "2px solid #06080D", borderRight: "2px solid #06080D", borderBottom: "2px solid #06080D", height: "48px", boxSizing: "border-box" }}>
+            <MessageCircle size={14} /> WhatsApp Us
           </a>
         </motion.div>
         <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.4 }}
@@ -44,12 +43,12 @@ export default function FinalCTA() {
         .finalcta-btns {
           display: flex;
           flex-direction: column;
-          gap: 14px;
+          gap: 12px;
           justify-content: center;
           align-items: center;
         }
         @media (min-width: 640px) {
-          .finalcta-btns { flex-direction: row; gap: 16px; }
+          .finalcta-btns { flex-direction: row; gap: 14px; }
         }
       `}</style>
     </section>
