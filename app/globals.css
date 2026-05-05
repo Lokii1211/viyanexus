@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* ===== SCROLL OFFSET FOR FIXED NAVBAR ===== */
+[id] { scroll-margin-top: 100px; }
+
 :root {
   /* ═══ BACKGROUNDS ═══ */
   --bg-void: #06080D;

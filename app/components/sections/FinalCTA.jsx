@@ -9,6 +9,22 @@ export default function FinalCTA() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
+  /* Shared button style — BOTH have 2px border so they're identical size */
+  const btn = {
+    padding: "13px 28px",
+    fontWeight: 700,
+    fontSize: "12px",
+    fontFamily: "var(--font-mono)",
+    textTransform: "uppercase",
+    letterSpacing: "0.1em",
+    textDecoration: "none",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "8px",
+    border: "2px solid transparent",
+    whiteSpace: "nowrap",
+  };
+
   return (
     <section style={{ position: "relative", padding: "80px 0", overflow: "hidden" }} ref={ref}>
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #8B6000, #C9910A 60%, #E8B84B)" }} />
@@ -24,27 +40,14 @@ export default function FinalCTA() {
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.25 }}
           className="finalcta-btns">
-          {/* Primary */}
+          {/* Primary — has invisible border so size matches WhatsApp */}
           <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="cta-btn-animate cta-pulse"
-            style={{
-              background: "#06080D", color: "#E8B84B",
-              padding: "14px 28px",
-              fontWeight: 700, fontSize: "12px",
-              fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.1em",
-              textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px",
-            }}>
+            style={{ ...btn, background: "#06080D", color: "#E8B84B", borderColor: "#06080D" }}>
             Book Free Call <ArrowRight size={14} />
           </a>
-          {/* Secondary — using outline instead of border so size matches */}
+          {/* Secondary — visible border, same total size */}
           <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="cta-btn-animate"
-            style={{
-              background: "transparent", color: "#06080D",
-              padding: "14px 28px",
-              fontWeight: 700, fontSize: "12px",
-              fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.1em",
-              textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px",
-              outline: "2px solid #06080D", outlineOffset: "-2px",
-            }}>
+            style={{ ...btn, background: "transparent", color: "#06080D", borderColor: "#06080D" }}>
             <MessageCircle size={14} /> WhatsApp Us
           </a>
         </motion.div>
