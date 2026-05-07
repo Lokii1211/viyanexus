@@ -1,125 +1,204 @@
 "use client";
-import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { ArrowRight, Play, CheckCircle2 } from "lucide-react";
 import PhoneMockup from "../ui/PhoneMockup";
-import { ChevronDown, MessageCircle } from "lucide-react";
+import HeroMesh from "../ui/HeroMesh";
 
-const HeroMesh = dynamic(() => import("../ui/HeroMesh"), { ssr: false });
+const WA_LINK = "https://wa.me/919003360494?text=Hi%20Viya%20Nexus%2C%20I%20want%20to%20book%20a%20free%20strategy%20call";
 
-const WA_LINK = "https://wa.me/919003360494?text=Hi%20Viya%20Nexus%2C%20I%20want%20to%20explore%20automation%20for%20my%20business";
+const trustLogos = ["Razorpay", "Shopify", "WhatsApp", "Google", "Meta"];
 
 export default function Hero() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+  /* Animated counter */
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    let frame;
+    const target = 50;
+    const duration = 2000;
+    const start = performance.now();
+    const animate = (now) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      setCount(Math.floor(progress * target));
+      if (progress < 1) frame = requestAnimationFrame(animate);
+    };
+    const timer = setTimeout(() => { frame = requestAnimationFrame(animate); }, 800);
+    return () => { clearTimeout(timer); cancelAnimationFrame(frame); };
+  }, []);
+
   return (
-    <section id="hero" className="relative min-h-[100dvh] flex items-center overflow-hidden">
-      {/* 3-Layer Background */}
-      <div className="absolute inset-0 bg-[#06080D]" />
-      <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(circle, rgba(201,145,10,0.04) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
-      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 60% 40% at 50% 0%, rgba(201,145,10,0.08) 0%, transparent 70%)" }} />
+    <section ref={ref} style={{
+      position: "relative", minHeight: "100vh", display: "flex", alignItems: "center",
+      overflow: "hidden", paddingTop: "100px", paddingBottom: "80px",
+    }}>
       <HeroMesh />
 
-      {/* Content — uses CSS container-main for reliable responsive padding */}
-      <div className="relative z-10 container-main w-full" style={{ paddingTop: "clamp(140px, 18vh, 200px)", paddingBottom: "clamp(60px, 8vh, 120px)" }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "48px" }}>
-          {/* On large screens: side-by-side. On small: stacked */}
-          <div className="hero-layout">
-            {/* Left */}
-            <div className="hero-content">
-              {/* Badge */}
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-                style={{ marginBottom: "32px" }}>
-                <div style={{ display: "inline-flex", alignItems: "center", gap: "12px", padding: "6px 16px", border: "1px solid rgba(201,145,10,0.2)", background: "rgba(201,145,10,0.05)" }}>
-                  <span style={{ width: "6px", height: "6px", background: "#C9910A", animation: "pulse-gold 3s infinite" }} />
-                  <span style={{ fontFamily: "var(--font-mono)", color: "#C9910A", textTransform: "uppercase", letterSpacing: "0.15em", fontSize: "11px" }}>
-                    INDIA&apos;S PREMIUM AI AUTOMATION PARTNER
-                  </span>
+      {/* Floating particles */}
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 1 }}>
+        {[...Array(6)].map((_, i) => (
+          <motion.div key={i}
+            animate={{ y: [0, -30, 0], opacity: [0.2, 0.5, 0.2] }}
+            transition={{ duration: 3 + i * 0.5, repeat: Infinity, delay: i * 0.4 }}
+            style={{
+              position: "absolute", width: "3px", height: "3px", borderRadius: "50%",
+              background: "#C9910A",
+              top: `${20 + i * 12}%`, left: `${10 + i * 15}%`,
+            }}
+          />
+        ))}
+      </div>
+
+      <motion.div style={{ y, opacity }} className="container-main" >
+        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "48px", alignItems: "center", position: "relative", zIndex: 10 }}>
+          {/* LEFT — Copy */}
+          <div style={{ maxWidth: "680px" }}>
+            {/* Urgency badge */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+              style={{ marginBottom: "24px" }}>
+              <span style={{
+                display: "inline-flex", alignItems: "center", gap: "8px",
+                background: "rgba(201,145,10,0.08)", border: "1px solid rgba(201,145,10,0.15)",
+                padding: "6px 16px", fontFamily: "var(--font-mono)", fontSize: "10px",
+                color: "#C9910A", textTransform: "uppercase", letterSpacing: "0.12em",
+              }}>
+                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#16A34A", animation: "pulse-dot 2s infinite" }} />
+                Only 3 slots left this month
+              </span>
+            </motion.div>
+
+            {/* Main headline with word reveal */}
+            <motion.h1
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              style={{
+                fontFamily: "var(--font-display)", fontWeight: 700,
+                fontSize: "clamp(36px, 6vw, 72px)", lineHeight: 1.05,
+                letterSpacing: "-0.03em", color: "white", marginBottom: "8px",
+              }}
+            >
+              Your Business,
+            </motion.h1>
+            <motion.h1
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.5 }}
+              style={{
+                fontFamily: "var(--font-display)", fontWeight: 700,
+                fontSize: "clamp(36px, 6vw, 72px)", lineHeight: 1.05,
+                letterSpacing: "-0.03em", marginBottom: "28px",
+              }}
+            >
+              <span className="gradient-text">Runs Itself.</span>
+            </motion.h1>
+
+            {/* Sub-headline — benefit-focused */}
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}
+              style={{
+                color: "rgba(255,255,255,0.55)", fontSize: "clamp(15px, 2vw, 19px)",
+                lineHeight: 1.8, maxWidth: "520px", marginBottom: "16px",
+              }}>
+              We deploy elite <strong style={{ color: "rgba(255,255,255,0.85)" }}>WhatsApp automation</strong> and{" "}
+              <strong style={{ color: "rgba(255,255,255,0.85)" }}>AI voice agents</strong> that handle your sales, support, and operations — while you sleep.
+            </motion.p>
+
+            {/* Trust bullets */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
+              style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "32px" }}>
+              {["Go live in 7 days, not 7 months", "Zero upfront cost — pay only for results", "24/7 AI that never calls in sick"].map((t, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <CheckCircle2 size={14} style={{ color: "#16A34A", flexShrink: 0 }} />
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "rgba(255,255,255,0.5)", letterSpacing: "0.02em" }}>{t}</span>
                 </div>
-              </motion.div>
+              ))}
+            </motion.div>
 
-              {/* Headline — Cormorant Garamond */}
-              <h1 style={{ marginBottom: "32px" }}>
-                <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.7 }}
-                  style={{ display: "block", fontFamily: "var(--font-display)", fontWeight: 700, color: "white", fontSize: "clamp(44px, 6vw, 80px)", lineHeight: 1.05, letterSpacing: "-0.02em" }}>
-                  Your Business,
-                </motion.span>
-                <motion.span initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65, duration: 0.7 }}
-                  style={{ display: "block", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(44px, 6vw, 80px)", lineHeight: 1.05, letterSpacing: "-0.02em", marginTop: "4px" }}>
-                  <span style={{ position: "relative", display: "inline-block", fontStyle: "italic" }}>
-                    Runs Itself.
-                    <svg style={{ position: "absolute", bottom: "-8px", left: 0, width: "100%" }} viewBox="0 0 420 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <motion.path d="M2 6C120.333 3.33333 299.667 3.33333 418 6" stroke="#C9910A" strokeWidth="3" strokeLinecap="round"
-                        initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 1.3, duration: 0.8, ease: "easeInOut" }} />
-                    </svg>
-                  </span>
-                </motion.span>
-              </h1>
+            {/* CTA row */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }}
+              style={{ display: "flex", flexWrap: "wrap", gap: "12px", alignItems: "center", marginBottom: "40px" }}>
+              <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="cta-btn-animate cta-pulse"
+                style={{
+                  background: "linear-gradient(135deg, #C9910A, #E8B84B)", color: "#422d00",
+                  padding: "16px 32px", fontFamily: "var(--font-mono)",
+                  textTransform: "uppercase", letterSpacing: "0.1em", fontSize: "12px",
+                  fontWeight: 700, textDecoration: "none",
+                  display: "inline-flex", alignItems: "center", gap: "10px",
+                  boxShadow: "0 4px 20px rgba(201,145,10,0.3)",
+                  transition: "all 0.3s",
+                }}>
+                Book Free Strategy Call <ArrowRight size={14} />
+              </a>
+              <a href="#portfolio"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: "8px",
+                  color: "rgba(255,255,255,0.5)", fontFamily: "var(--font-mono)",
+                  fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.1em",
+                  textDecoration: "none", padding: "16px 20px",
+                  transition: "color 0.3s",
+                }}>
+                <Play size={12} fill="rgba(255,255,255,0.3)" /> See Results
+              </a>
+            </motion.div>
 
-              {/* Subheadline */}
-              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.85, duration: 0.6 }}
-                style={{ fontFamily: "var(--font-body)", fontSize: "clamp(16px, 1.8vw, 20px)", color: "#d4c4ae", maxWidth: "520px", lineHeight: 1.7, marginBottom: "32px" }}>
-                Scale without limits. We deploy elite WhatsApp automation and AI voice agents that handle your sales, support, and operations — while you sleep.
-              </motion.p>
-
-              {/* Pain Proof Strip */}
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.0, duration: 0.6 }}
-                style={{ display: "flex", flexWrap: "wrap", gap: "24px", padding: "20px 0", marginBottom: "24px" }}>
-                {[
-                  { val: "₹50L+", label: "REVENUE GENERATED" },
-                  { val: "30+", label: "BUSINESSES" },
-                  { val: "7-DAY", label: "DELIVERY" },
-                ].map((s, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <span style={{ color: "#fabc3e", fontWeight: 700, fontSize: "15px" }}>{s.val}</span>
-                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "#d4c4ae", letterSpacing: "0.12em" }}>{s.label}</span>
-                  </div>
-                ))}
-              </motion.div>
-
-              {/* CTAs */}
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2, duration: 0.5 }}
-                style={{ display: "flex", flexWrap: "wrap", gap: "16px", marginBottom: "24px" }}>
-                <a href={WA_LINK} target="_blank" rel="noopener noreferrer" className="cta-btn-animate cta-pulse"
-                  style={{ background: "#C9910A", color: "#422d00", padding: "18px 40px", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.12em", fontWeight: 700, fontSize: "13px", textDecoration: "none" }}>
-                  Book Free Strategy Call
-                </a>
-                <a href="#portfolio" className="cta-btn-animate"
-                  style={{ borderTop: "1px solid rgba(255,255,255,0.1)", borderLeft: "1px solid rgba(255,255,255,0.1)", borderRight: "1px solid rgba(255,255,255,0.1)", borderBottom: "1px solid rgba(255,255,255,0.1)", color: "white", padding: "18px 32px", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.12em", fontSize: "13px", textDecoration: "none" }}>
-                  Watch Demo
-                </a>
-              </motion.div>
-
-              {/* WhatsApp link */}
-              <motion.a initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
-                href={WA_LINK} target="_blank" rel="noopener noreferrer"
-                style={{ display: "inline-flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
-                <MessageCircle size={16} style={{ color: "#25D366" }} />
-                <span style={{ fontFamily: "var(--font-mono)", color: "#d4c4ae", fontSize: "12px", letterSpacing: "0.08em" }}>Message us on WhatsApp</span>
-              </motion.a>
-            </div>
-
-            {/* Right: Phone Mockup — only on desktop */}
-            <motion.div initial={{ opacity: 0, x: 60, scale: 0.92 }} animate={{ opacity: 1, x: 0, scale: 1 }}
-              transition={{ delay: 1.0, duration: 1 }}
-              className="hero-phone">
-              <PhoneMockup />
+            {/* Stats bar */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
+              style={{ display: "flex", flexWrap: "wrap", gap: "32px", paddingTop: "24px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+              <div>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: 900, color: "#E8B84B" }}>₹{count}L+</div>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: "9px", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.1em" }}>Revenue Generated</div>
+              </div>
+              <div>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: 900, color: "white" }}>30+</div>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: "9px", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.1em" }}>Businesses Automated</div>
+              </div>
+              <div>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: "32px", fontWeight: 900, color: "white" }}>7-Day</div>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: "9px", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.1em" }}>Delivery</div>
+              </div>
             </motion.div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Scroll Indicator */}
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2, duration: 0.6 }}
-        style={{ position: "absolute", bottom: "32px", left: "50%", transform: "translateX(-50%)", zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.2em" }}>Scroll</span>
-        <ChevronDown size={16} style={{ color: "#C9910A", animation: "bounce-down 2s ease-in-out infinite" }} />
+      {/* Phone mockup — floating right on desktop */}
+      <motion.div
+        initial={{ opacity: 0, x: 60 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1, duration: 1 }}
+        className="hero-phone"
+        style={{
+          position: "absolute", right: "5%", top: "50%", transform: "translateY(-50%)",
+          zIndex: 10, display: "none",
+        }}>
+        <PhoneMockup />
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        animate={{ y: [0, 8, 0] }}
+        transition={{ duration: 2, repeat: Infinity }}
+        style={{
+          position: "absolute", bottom: "32px", left: "50%", transform: "translateX(-50%)",
+          display: "flex", flexDirection: "column", alignItems: "center", gap: "4px",
+          zIndex: 10,
+        }}>
+        <div style={{ width: "1px", height: "24px", background: "linear-gradient(to bottom, transparent, rgba(201,145,10,0.4))" }} />
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: "8px", color: "rgba(255,255,255,0.2)", textTransform: "uppercase", letterSpacing: "0.15em" }}>scroll</span>
       </motion.div>
 
       <style jsx>{`
-        .hero-layout { display: flex; flex-direction: column; gap: 40px; }
-        .hero-content { flex: 1; }
-        .hero-phone { display: none; }
+        @keyframes pulse-dot {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.4; }
+        }
         @media (min-width: 1024px) {
-          .hero-layout { flex-direction: row; align-items: center; gap: 64px; }
-          .hero-phone { display: block; flex-shrink: 0; }
+          .hero-phone { display: block !important; }
         }
       `}</style>
     </section>

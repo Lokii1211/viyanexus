@@ -1,131 +1,175 @@
 "use client";
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { ArrowRight } from "lucide-react";
+import { useRef, useState } from "react";
+import { MessageSquare, Phone, Bot, BarChart3, Globe, Workflow, ArrowRight, ChevronRight } from "lucide-react";
 
-const WA_LINK = "https://wa.me/919003360494?text=Hi%20Viya%20Nexus%2C%20I%20want%20to%20know%20about%20";
+const WA_LINK = "https://wa.me/919003360494?text=Hi%20Viya%20Nexus%2C%20I%20need%20help%20with%20automation";
 
 const services = [
-  { num: "01", name: "WhatsApp Automation", desc: "Replaces manual WhatsApp replies that take 2–4 hours/day with high-volume CRM integrated engagement protocols.", featured: false, wide: true, moduleRef: "WA-01" },
-  { num: "02", name: "Voice AI Assistant", desc: "Eliminate missed calls and overwhelmed receptionists. Our AI handles inbound support and outbound scheduling with near-zero latency.", featured: true, wide: true, moduleRef: "V-AI", badges: ["Inbound Routing", "Outbound Campaigns"] },
-  { num: "03", name: "AI Business Chatbot", desc: "Replaces expensive customer support staff for all routine queries.", featured: false, wide: false, moduleRef: "CB-03" },
-  { num: "04", name: "Web Design & Dev", desc: "Replaces outdated sites that embarrass you in high-stakes client calls.", featured: false, wide: false, moduleRef: "WEB-04" },
-  { num: "05", name: "Marketing Automation", desc: "Fixes inconsistent follow-ups and captures every lost lead opportunity.", featured: false, wide: false, moduleRef: "MKT-05" },
-  { num: "06", name: "Full Automation Stack", desc: "Replaces fragmented systems and constant firefighting with a single unit.", featured: false, wide: false, moduleRef: "FAS-06", tag: "POPULAR" },
+  {
+    icon: MessageSquare, title: "WhatsApp AI Chatbot",
+    short: "24/7 sales & support on autopilot",
+    desc: "Custom-trained AI that handles enquiries, qualifies leads, takes orders, schedules appointments, and sends follow-ups — all through WhatsApp Business API.",
+    features: ["Menu browsing & ordering", "Lead qualification", "Appointment booking", "Auto follow-ups", "Multi-language support"],
+    result: "94% fewer manual replies",
+    popular: true,
+  },
+  {
+    icon: Phone, title: "AI Voice Agent",
+    short: "Never miss a call again",
+    desc: "AI-powered virtual receptionist that answers calls 24/7, books appointments, handles FAQs, and routes complex queries to your team.",
+    features: ["24/7 call handling", "Appointment scheduling", "Natural conversation", "Call transcription", "CRM integration"],
+    result: "96% call resolution rate",
+    popular: false,
+  },
+  {
+    icon: Bot, title: "Instagram DM Bot",
+    short: "Convert followers into customers",
+    desc: "Automated Instagram DM responses for story mentions, comments, and direct enquiries. Qualifies leads and pushes them to WhatsApp.",
+    features: ["Story reply automation", "Comment triggers", "Lead capture forms", "WhatsApp handoff", "Analytics dashboard"],
+    result: "40% more conversions",
+    popular: false,
+  },
+  {
+    icon: Workflow, title: "Workflow Automation",
+    short: "Connect everything, automate anything",
+    desc: "End-to-end business process automation — from lead capture to invoicing. We connect your CRM, calendar, payment gateway, and communication channels.",
+    features: ["Multi-tool integration", "Custom workflows", "Error handling", "Auto-notifications", "Real-time sync"],
+    result: "4+ hours saved daily",
+    popular: false,
+  },
+  {
+    icon: Globe, title: "AI Landing Pages",
+    short: "High-converting pages in 48 hours",
+    desc: "Conversion-optimized landing pages with integrated WhatsApp CTAs, lead capture, and analytics. Built to convert traffic into paying customers.",
+    features: ["Mobile-first design", "WhatsApp CTA integration", "A/B testing ready", "Speed optimized", "Analytics built-in"],
+    result: "2.3x more leads captured",
+    popular: false,
+  },
+  {
+    icon: BarChart3, title: "Analytics & Optimization",
+    short: "Data-driven decisions, monthly",
+    desc: "Monthly performance reports with actionable insights. We continuously optimize your automations based on real conversation data and conversion metrics.",
+    features: ["Monthly reports", "Conversion tracking", "Bot optimization", "ROI dashboards", "Growth recommendations"],
+    result: "Continuous improvement",
+    popular: false,
+  },
 ];
 
 export default function Services() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const [expanded, setExpanded] = useState(null);
 
   return (
-    <section id="services" className="section-pad" style={{ background: "#06080D", position: "relative", overflow: "hidden" }} ref={ref}>
-      <div style={{ position: "absolute", inset: 0, opacity: 0.1, pointerEvents: "none", backgroundImage: "radial-gradient(circle, rgba(201,145,10,1) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
-
-      <div className="container-main" style={{ position: "relative", zIndex: 10 }}>
-        {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "80px" }}>
-          <motion.span initial={{ opacity: 0, y: 15 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.4 }}
-            style={{ fontFamily: "var(--font-mono)", color: "#C9910A", letterSpacing: "0.2em", fontSize: "12px", textTransform: "uppercase", display: "block", marginBottom: "24px" }}>
-            Our Services
-          </motion.span>
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, delay: 0.1 }}
-            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(32px, 5vw, 56px)", color: "white", lineHeight: 1.1, marginBottom: "16px", letterSpacing: "-0.02em", fontWeight: 700 }}>
-            Six ways we put your business on autopilot.
+    <section id="services" className="section-pad" style={{ background: "#0F1219", position: "relative", overflow: "hidden" }} ref={ref}>
+      <div className="container-main" style={{ position: "relative", zIndex: 2 }}>
+        <div className="section-header">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}>
+            <span className="section-label">WHAT WE BUILD</span>
+          </motion.div>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }}
+            className="section-title" style={{ marginBottom: "16px" }}>
+            AI Solutions That <span className="gradient-text">Actually Work</span>
           </motion.h2>
           <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.2 }}
-            style={{ fontFamily: "var(--font-body)", fontSize: "18px", color: "#71717a" }}>
-            Every service is built to work while you sleep.
+            className="section-sub" style={{ margin: "0 auto" }}>
+            Not generic chatbots. Custom-engineered AI agents trained on your business, your tone, your customers.
           </motion.p>
         </div>
 
-        {/* Bento Grid */}
-        <div className="services-grid">
-          {services.map((s, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 25 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.15 + i * 0.08 }}
-              className={s.wide ? "service-card-wide" : "service-card"}
-              style={{
-                display: "flex", flexDirection: "column", justifyContent: "space-between",
-                background: "#0F1219",
-                borderTop: s.featured ? "2px solid rgba(201,145,10,0.5)" : "1px solid rgba(201,145,10,0.08)",
-                borderLeft: "1px solid rgba(201,145,10,0.08)",
-                borderRight: "1px solid rgba(201,145,10,0.08)",
-                borderBottom: "1px solid rgba(201,145,10,0.08)",
-                borderRadius: "2px",
-                padding: s.wide ? "36px" : "28px",
-                minHeight: s.wide ? "300px" : "260px",
-                transition: "border-color 0.4s",
-              }}
-            >
-              <div>
-                {/* Featured / Tag badge — own row */}
-                {s.featured && (
-                  <div style={{ marginBottom: "16px" }}>
-                    <span style={{ background: "#C9910A", color: "#422d00", fontFamily: "var(--font-mono)", fontSize: "9px", padding: "4px 12px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>★ Most Demanded</span>
-                  </div>
-                )}
-                {s.tag && (
-                  <div style={{ marginBottom: "16px" }}>
-                    <span style={{ background: "#52525b", color: "white", fontFamily: "var(--font-mono)", fontSize: "9px", padding: "4px 10px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em" }}>{s.tag}</span>
-                  </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 340px), 1fr))", gap: "16px" }}>
+          {services.map((s, i) => {
+            const Icon = s.icon;
+            const isOpen = expanded === i;
+            return (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.1 + i * 0.08 }}
+                onClick={() => setExpanded(isOpen ? null : i)}
+                className="service-card"
+                style={{
+                  background: "#0A0C12",
+                  border: isOpen ? "1px solid rgba(201,145,10,0.2)" : "1px solid rgba(255,255,255,0.04)",
+                  padding: "28px",
+                  cursor: "pointer",
+                  position: "relative",
+                  overflow: "hidden",
+                  transition: "all 0.4s ease",
+                }}
+              >
+                {s.popular && (
+                  <div style={{
+                    position: "absolute", top: "12px", right: "12px",
+                    background: "rgba(201,145,10,0.12)", border: "1px solid rgba(201,145,10,0.2)",
+                    padding: "3px 10px", fontFamily: "var(--font-mono)", fontSize: "8px",
+                    color: "#C9910A", textTransform: "uppercase", letterSpacing: "0.12em",
+                  }}>★ Most Popular</div>
                 )}
 
-                {/* Number + Module */}
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-                  <div style={{ width: "44px", height: "44px", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(201,145,10,0.1)", border: "1px solid rgba(201,145,10,0.2)" }}>
-                    <span style={{ color: "#C9910A", fontSize: "16px", fontWeight: 700 }}>{s.num}</span>
+                <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "12px" }}>
+                  <div style={{
+                    width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center",
+                    background: "rgba(201,145,10,0.06)", border: "1px solid rgba(201,145,10,0.1)",
+                    flexShrink: 0,
+                  }}>
+                    <Icon size={18} style={{ color: "#C9910A" }} />
                   </div>
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.15em", color: "rgba(255,255,255,0.15)" }}>{s.moduleRef}</span>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: 700, color: "white" }}>{s.title}</h3>
+                    <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "0.05em" }}>{s.short}</p>
+                  </div>
+                  <ChevronRight size={16} style={{ color: "rgba(255,255,255,0.2)", transform: isOpen ? "rotate(90deg)" : "rotate(0)", transition: "transform 0.3s" }} />
                 </div>
 
-                {/* Title + Desc */}
-                <h3 style={{ fontFamily: "var(--font-body)", fontWeight: 600, color: "white", marginBottom: "10px", lineHeight: 1.3, fontSize: s.wide ? "22px" : "17px" }}>
-                  {s.name}
-                </h3>
-                <p style={{ fontFamily: "var(--font-body)", color: "#a1a1aa", lineHeight: 1.7, fontSize: "13px", maxWidth: s.wide ? "400px" : "none" }}>
-                  {s.desc}
-                </p>
-              </div>
+                <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px", lineHeight: 1.7, marginBottom: isOpen ? "16px" : "0" }}>{s.desc}</p>
 
-              {/* Footer */}
-              <div style={{ marginTop: "24px" }}>
-                {s.badges && (
-                  <div style={{ paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.05)", marginBottom: "16px" }}>
-                    {s.badges.map((b, j) => (
-                      <div key={j} style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-                        <span style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#C9910A" }} />
-                        <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.05em" }}>{b}</span>
-                      </div>
+                {/* Expandable content */}
+                <motion.div
+                  initial={false}
+                  animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  style={{ overflow: "hidden" }}
+                >
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "16px" }}>
+                    {s.features.map((f, j) => (
+                      <span key={j} style={{
+                        padding: "4px 10px", background: "rgba(255,255,255,0.03)",
+                        border: "1px solid rgba(255,255,255,0.06)",
+                        fontFamily: "var(--font-mono)", fontSize: "9px",
+                        color: "rgba(255,255,255,0.45)", letterSpacing: "0.04em",
+                      }}>✓ {f}</span>
                     ))}
                   </div>
-                )}
-                <a href={`${WA_LINK}${encodeURIComponent(s.name)}`} target="_blank" rel="noopener noreferrer" className="cta-btn-animate"
-                  style={{ fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.12em", color: "#C9910A", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}>
-                  → See How It Works <ArrowRight size={12} />
-                </a>
-              </div>
-            </motion.div>
-          ))}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "12px", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "#E8B84B", fontWeight: 700 }}>📈 {s.result}</span>
+                    <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="cta-btn-animate"
+                      style={{
+                        padding: "8px 16px", background: "rgba(201,145,10,0.1)",
+                        border: "1px solid rgba(201,145,10,0.2)",
+                        fontFamily: "var(--font-mono)", fontSize: "10px",
+                        color: "#C9910A", textDecoration: "none",
+                        textTransform: "uppercase", letterSpacing: "0.1em",
+                        display: "inline-flex", alignItems: "center", gap: "6px",
+                      }}>
+                      Get This <ArrowRight size={10} />
+                    </a>
+                  </div>
+                </motion.div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
 
       <style jsx>{`
-        .services-grid {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 16px;
-        }
-        @media (min-width: 768px) {
-          .services-grid {
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-          }
-          .service-card-wide { grid-column: span 2; }
-          .service-card { grid-column: span 1; }
+        .service-card:hover {
+          border-color: rgba(201,145,10,0.15) !important;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 30px rgba(0,0,0,0.3);
         }
       `}</style>
     </section>
