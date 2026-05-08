@@ -30,7 +30,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section ref={ref} style={{
+    <section id="home" ref={ref} style={{
       position: "relative", minHeight: "100vh", display: "flex", alignItems: "center",
       overflow: "hidden", paddingTop: "90px", paddingBottom: "60px",
     }}>

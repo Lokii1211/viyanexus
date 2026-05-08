@@ -1,7 +1,7 @@
 "use client";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
-import { MessageSquare, Phone, Bot, BarChart3, Globe, Workflow, ArrowRight, ChevronRight } from "lucide-react";
+import { MessageSquare, Phone, Globe, BarChart3, Workflow, Megaphone, ArrowRight, ChevronRight } from "lucide-react";
 
 const WA_LINK = "https://wa.me/919003360494?text=Hi%20Viya%20Nexus%2C%20I%20need%20help%20with%20automation";
 
@@ -23,11 +23,19 @@ const services = [
     popular: false,
   },
   {
-    icon: Bot, title: "Instagram DM Bot",
-    short: "Convert followers into customers",
-    desc: "Automated Instagram DM responses for story mentions, comments, and direct enquiries. Qualifies leads and pushes them to WhatsApp.",
-    features: ["Story reply automation", "Comment triggers", "Lead capture forms", "WhatsApp handoff", "Analytics dashboard"],
-    result: "40% more conversions",
+    icon: Globe, title: "Web Development",
+    short: "High-converting websites in 7 days",
+    desc: "Custom-built, mobile-first websites optimized for speed, SEO, and conversions. Landing pages, business sites, and e-commerce platforms that turn visitors into paying customers.",
+    features: ["Mobile-first design", "SEO optimization", "WhatsApp CTA integration", "Speed optimized (<2s load)", "Analytics built-in", "Hosting & maintenance"],
+    result: "2.3x more leads captured",
+    popular: false,
+  },
+  {
+    icon: Megaphone, title: "Digital Marketing",
+    short: "Grow your brand, drive real revenue",
+    desc: "Data-driven digital marketing campaigns across Google Ads, Meta Ads, and organic channels. We don't just drive traffic — we drive qualified leads that convert.",
+    features: ["Google & Meta Ads", "SEO & content strategy", "Social media management", "Email marketing automation", "Monthly ROI reports", "Competitor analysis"],
+    result: "3.5x average ROAS",
     popular: false,
   },
   {
@@ -36,14 +44,6 @@ const services = [
     desc: "End-to-end business process automation — from lead capture to invoicing. We connect your CRM, calendar, payment gateway, and communication channels.",
     features: ["Multi-tool integration", "Custom workflows", "Error handling", "Auto-notifications", "Real-time sync"],
     result: "4+ hours saved daily",
-    popular: false,
-  },
-  {
-    icon: Globe, title: "AI Landing Pages",
-    short: "High-converting pages in 48 hours",
-    desc: "Conversion-optimized landing pages with integrated WhatsApp CTAs, lead capture, and analytics. Built to convert traffic into paying customers.",
-    features: ["Mobile-first design", "WhatsApp CTA integration", "A/B testing ready", "Speed optimized", "Analytics built-in"],
-    result: "2.3x more leads captured",
     popular: false,
   },
   {
@@ -58,11 +58,14 @@ const services = [
 
 export default function Services() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
   const [expanded, setExpanded] = useState(null);
 
   return (
     <section id="services" className="section-pad" style={{ background: "#0F1219", position: "relative", overflow: "hidden" }} ref={ref}>
+      {/* Ambient glow */}
+      <div style={{ position: "absolute", top: "30%", right: "-5%", width: "500px", height: "500px", background: "radial-gradient(circle, rgba(201,145,10,0.025) 0%, transparent 60%)", pointerEvents: "none" }} />
+
       <div className="container-main" style={{ position: "relative", zIndex: 2 }}>
         <div className="section-header">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5 }}>
@@ -70,15 +73,15 @@ export default function Services() {
           </motion.div>
           <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }}
             className="section-title" style={{ marginBottom: "16px" }}>
-            AI Solutions That <span className="gradient-text">Actually Work</span>
+            Solutions That <span className="gradient-text">Actually Work</span>
           </motion.h2>
           <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.2 }}
             className="section-sub" style={{ margin: "0 auto" }}>
-            Not generic chatbots. Custom-engineered AI agents trained on your business, your tone, your customers.
+            Not generic templates. Custom-engineered solutions built for your business, your customers, your growth.
           </motion.p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 340px), 1fr))", gap: "16px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 340px), 1fr))", gap: "12px" }}>
           {services.map((s, i) => {
             const Icon = s.icon;
             const isOpen = expanded === i;
@@ -90,15 +93,21 @@ export default function Services() {
                 onClick={() => setExpanded(isOpen ? null : i)}
                 className="service-card"
                 style={{
-                  background: "#0A0C12",
+                  background: isOpen ? "#0D0F16" : "#0A0C12",
                   border: isOpen ? "1px solid rgba(201,145,10,0.2)" : "1px solid rgba(255,255,255,0.04)",
-                  padding: "28px",
+                  padding: "24px",
                   cursor: "pointer",
                   position: "relative",
                   overflow: "hidden",
                   transition: "all 0.4s ease",
                 }}
               >
+                {/* Top glow line on hover */}
+                <motion.div
+                  animate={{ opacity: isOpen ? 0.8 : 0 }}
+                  style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: "linear-gradient(to right, transparent, #C9910A, transparent)" }}
+                />
+
                 {s.popular && (
                   <div style={{
                     position: "absolute", top: "12px", right: "12px",
@@ -108,57 +117,71 @@ export default function Services() {
                   }}>★ Most Popular</div>
                 )}
 
-                <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "12px" }}>
-                  <div style={{
-                    width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center",
-                    background: "rgba(201,145,10,0.06)", border: "1px solid rgba(201,145,10,0.1)",
-                    flexShrink: 0,
-                  }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "10px" }}>
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    style={{
+                      width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center",
+                      background: "rgba(201,145,10,0.06)", border: "1px solid rgba(201,145,10,0.1)",
+                      flexShrink: 0,
+                    }}>
                     <Icon size={18} style={{ color: "#C9910A" }} />
-                  </div>
+                  </motion.div>
                   <div style={{ flex: 1 }}>
-                    <h3 style={{ fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: 700, color: "white" }}>{s.title}</h3>
-                    <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "0.05em" }}>{s.short}</p>
+                    <h3 style={{ fontFamily: "var(--font-display)", fontSize: "17px", fontWeight: 700, color: "white" }}>{s.title}</h3>
+                    <p style={{ fontFamily: "var(--font-mono)", fontSize: "9px", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.05em" }}>{s.short}</p>
                   </div>
-                  <ChevronRight size={16} style={{ color: "rgba(255,255,255,0.2)", transform: isOpen ? "rotate(90deg)" : "rotate(0)", transition: "transform 0.3s" }} />
+                  <motion.div animate={{ rotate: isOpen ? 90 : 0 }} transition={{ duration: 0.3 }}>
+                    <ChevronRight size={16} style={{ color: isOpen ? "#C9910A" : "rgba(255,255,255,0.15)" }} />
+                  </motion.div>
                 </div>
 
-                <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px", lineHeight: 1.7, marginBottom: isOpen ? "16px" : "0" }}>{s.desc}</p>
+                <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "12px", lineHeight: 1.7, marginBottom: isOpen ? "14px" : "0" }}>{s.desc}</p>
 
-                {/* Expandable content */}
-                <motion.div
-                  initial={false}
-                  animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
-                  transition={{ duration: 0.3 }}
-                  style={{ overflow: "hidden" }}
-                >
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "16px" }}>
-                    {s.features.map((f, j) => (
-                      <span key={j} style={{
-                        padding: "4px 10px", background: "rgba(255,255,255,0.03)",
-                        border: "1px solid rgba(255,255,255,0.06)",
-                        fontFamily: "var(--font-mono)", fontSize: "9px",
-                        color: "rgba(255,255,255,0.45)", letterSpacing: "0.04em",
-                      }}>✓ {f}</span>
-                    ))}
-                  </div>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "12px", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
-                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "#E8B84B", fontWeight: 700 }}>📈 {s.result}</span>
-                    <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="cta-btn-animate"
-                      style={{
-                        padding: "8px 16px", background: "rgba(201,145,10,0.1)",
-                        border: "1px solid rgba(201,145,10,0.2)",
-                        fontFamily: "var(--font-mono)", fontSize: "10px",
-                        color: "#C9910A", textDecoration: "none",
-                        textTransform: "uppercase", letterSpacing: "0.1em",
-                        display: "inline-flex", alignItems: "center", gap: "6px",
-                      }}>
-                      Get This <ArrowRight size={10} />
-                    </a>
-                  </div>
-                </motion.div>
+                {/* Expandable content with animation */}
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      style={{ overflow: "hidden" }}
+                    >
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "14px" }}>
+                        {s.features.map((f, j) => (
+                          <motion.span key={j}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: j * 0.04 }}
+                            style={{
+                              padding: "4px 10px", background: "rgba(255,255,255,0.03)",
+                              border: "1px solid rgba(255,255,255,0.06)",
+                              fontFamily: "var(--font-mono)", fontSize: "9px",
+                              color: "rgba(255,255,255,0.45)", letterSpacing: "0.04em",
+                            }}>✓ {f}</motion.span>
+                        ))}
+                      </div>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "12px", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+                        <span style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "#E8B84B", fontWeight: 700 }}>📈 {s.result}</span>
+                        <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="cta-btn-animate"
+                          style={{
+                            padding: "8px 16px", background: "rgba(201,145,10,0.1)",
+                            border: "1px solid rgba(201,145,10,0.2)",
+                            fontFamily: "var(--font-mono)", fontSize: "10px",
+                            color: "#C9910A", textDecoration: "none",
+                            textTransform: "uppercase", letterSpacing: "0.1em",
+                            display: "inline-flex", alignItems: "center", gap: "6px",
+                            transition: "all 0.3s",
+                          }}>
+                          Get This <ArrowRight size={10} />
+                        </a>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             );
           })}
@@ -167,7 +190,7 @@ export default function Services() {
 
       <style jsx>{`
         .service-card:hover {
-          border-color: rgba(201,145,10,0.15) !important;
+          border-color: rgba(201,145,10,0.12) !important;
           transform: translateY(-2px);
           box-shadow: 0 8px 30px rgba(0,0,0,0.3);
         }
