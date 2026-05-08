@@ -101,9 +101,9 @@ body {
    ║  Mobile: 80px, Tablet: 120px,       ║
    ║  Desktop: 160px                     ║
    ╚══════════════════════════════════════╝ */
-.section-pad { padding-top: 80px; padding-bottom: 80px; scroll-margin-top: 100px; }
-@media (min-width: 640px) { .section-pad { padding-top: 120px; padding-bottom: 120px; } }
-@media (min-width: 1024px) { .section-pad { padding-top: 160px; padding-bottom: 160px; } }
+.section-pad { padding-top: 60px; padding-bottom: 60px; scroll-margin-top: 80px; }
+@media (min-width: 640px) { .section-pad { padding-top: 80px; padding-bottom: 80px; } }
+@media (min-width: 1024px) { .section-pad { padding-top: 100px; padding-bottom: 100px; } }
 
 /* Scroll offset for sections with id targets */
 [id] { scroll-margin-top: 100px; }
