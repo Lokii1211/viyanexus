@@ -31,8 +31,9 @@ export default function Hero() {
 
   return (
     <section id="home" ref={ref} style={{
-      position: "relative", minHeight: "100vh", display: "flex", alignItems: "center",
-      overflow: "hidden", paddingTop: "90px", paddingBottom: "60px",
+      position: "relative", display: "flex", alignItems: "center",
+      overflow: "hidden", paddingTop: "100px", paddingBottom: "80px",
+      minHeight: "auto",
     }}>
       <HeroMesh />
 
@@ -163,18 +164,6 @@ export default function Hero() {
             <PhoneMockup />
           </motion.div>
         </div>
-      </motion.div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        style={{
-          position: "absolute", bottom: "24px", left: "50%", transform: "translateX(-50%)",
-          display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", zIndex: 10,
-        }}>
-        <div style={{ width: "1px", height: "20px", background: "linear-gradient(to bottom, transparent, rgba(201,145,10,0.4))" }} />
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: "7px", color: "rgba(255,255,255,0.2)", textTransform: "uppercase", letterSpacing: "0.15em" }}>scroll</span>
       </motion.div>
 
       <style jsx>{`
