@@ -2,167 +2,130 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 
-const conversation = [
-  { from: "user", text: "Hi, I saw your ad for the premium skincare kit 🧴" },
-  { from: "bot", text: "Hey there! 👋 Yes, the Premium Glow Kit is available!\n\n✨ Vitamin C Serum\n🧴 Hyaluronic Moisturizer\n🌙 Night Repair Cream\n\nWant to grab one?" },
-  { from: "user", text: "What's the price?" },
-  { from: "bot", text: "₹2,499 (MRP ₹3,999) — 38% OFF! 🔥\n\nFree shipping + COD available 🚚\n⏳ Offer valid for 2 hours only!" },
-  { from: "user", text: "Yes! COD to Bangalore 560001" },
-  { from: "bot", text: "✅ Order Confirmed!\n\n📦 #VN-48291\n📍 Bangalore 560001\n💰 ₹2,499 COD\n📅 Delivery: 2-3 days\n\nThank you! 🙏" },
-  { from: "user", text: "That was super fast! Thanks 😊" },
-  { from: "bot", text: "Happy to help! 💛\n\nYou'll get tracking on WhatsApp.\nRefer a friend & get 15% off next order! 🎁" },
+const messages = [
+  { side: "right", text: "Hi, I saw your ad for the skincare kit 🧴" },
+  { side: "left", text: "Hey! 👋 The Premium Glow Kit is available.\n\n✨ Vitamin C Serum\n🧴 Hyaluronic Moisturizer\n🌙 Night Repair Cream\n\nWant to grab one?" },
+  { side: "right", text: "What's the price?" },
+  { side: "left", text: "₹2,499 (MRP ₹3,999) — 38% OFF 🔥\n\nFree shipping + COD 🚚\n⏳ Valid for 2 hours!" },
+  { side: "right", text: "Yes! COD to Bangalore 560001" },
+  { side: "left", text: "✅ Order Confirmed!\n\n📦 #VN-48291\n📍 Bangalore 560001\n💰 ₹2,499 COD\n📅 2-3 days delivery" },
 ];
 
-function getTime(index) {
-  const base = 10 * 60 + 32;
-  const mins = base + Math.floor(index / 2);
-  const h = Math.floor(mins / 60);
-  const m = mins % 60;
-  return `${h}:${m.toString().padStart(2, "0")} AM`;
+function MsgTime({ index }) {
+  const m = 32 + Math.floor(index / 2);
+  return <span style={S.time}>{`10:${m} AM`}</span>;
+}
+
+function Ticks() {
+  return (
+    <svg width="16" height="8" viewBox="0 0 16 11" fill="none" style={{ flexShrink: 0 }}>
+      <path d="M1 5.5L4.5 9L11 2" stroke="#53BDEB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M5 5.5L8.5 9L15 2" stroke="#53BDEB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
 }
 
 export default function PhoneMockup() {
-  const [visibleCount, setVisibleCount] = useState(0);
-  const [isTyping, setIsTyping] = useState(false);
-  const [typingSide, setTypingSide] = useState("user");
-  const chatRef = useRef(null);
+  const [count, setCount] = useState(0);
+  const [typing, setTyping] = useState(false);
+  const scrollRef = useRef(null);
 
   useEffect(() => {
-    if (visibleCount >= conversation.length) {
-      const resetTimer = setTimeout(() => {
-        setVisibleCount(0);
-        setIsTyping(false);
-      }, 5000);
-      return () => clearTimeout(resetTimer);
+    if (count >= messages.length) {
+      const t = setTimeout(() => { setCount(0); setTyping(false); }, 6000);
+      return () => clearTimeout(t);
     }
-
-    const nextMsg = conversation[visibleCount];
-    const typingDelay = nextMsg.from === "bot" ? 1800 : 1200;
-    const showDelay = nextMsg.from === "bot" ? 800 : 500;
-
-    const typingTimer = setTimeout(() => {
-      setIsTyping(true);
-      setTypingSide(nextMsg.from);
-    }, 600);
-
-    const msgTimer = setTimeout(() => {
-      setIsTyping(false);
-      setVisibleCount(prev => prev + 1);
-    }, typingDelay + showDelay);
-
-    return () => {
-      clearTimeout(typingTimer);
-      clearTimeout(msgTimer);
-    };
-  }, [visibleCount]);
+    const next = messages[count];
+    const d1 = next.side === "left" ? 1600 : 1000;
+    const t1 = setTimeout(() => setTyping(true), 500);
+    const t2 = setTimeout(() => { setTyping(false); setCount(c => c + 1); }, d1 + 600);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [count]);
 
   useEffect(() => {
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
-    }
-  }, [visibleCount, isTyping]);
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+  }, [count, typing]);
 
   return (
-    <div className="phone-wrapper">
-      {/* iPhone outer shell */}
-      <div className="iphone-shell">
-        {/* Physical buttons */}
-        <div className="btn-silent" />
-        <div className="btn-vol-up" />
-        <div className="btn-vol-down" />
-        <div className="btn-power" />
+    <div style={S.wrapper}>
+      {/* ──── PHONE FRAME ──── */}
+      <div style={S.frame}>
+        {/* Side buttons */}
+        <div style={{ ...S.sideBtn, top: 90, left: -3, height: 18 }} />
+        <div style={{ ...S.sideBtn, top: 130, left: -3, height: 34 }} />
+        <div style={{ ...S.sideBtn, top: 172, left: -3, height: 34 }} />
+        <div style={{ ...S.sideBtn, top: 150, right: -3, left: "auto", height: 46 }} />
 
-        {/* Inner screen bezel */}
-        <div className="iphone-inner">
-          {/* Notch */}
-          <div className="notch">
-            <div className="notch-speaker" />
-            <div className="notch-camera" />
+        {/* Screen area */}
+        <div style={S.screen}>
+
+          {/* ─ NOTCH ─ */}
+          <div style={S.notch}>
+            <div style={S.notchSpeaker} />
+            <div style={S.notchCam} />
           </div>
 
-          {/* Status Bar */}
-          <div className="status-bar">
-            <span className="sb-time">9:41</span>
-            <div className="sb-icons">
-              <div className="sb-signal">
-                {[4, 6, 9, 12].map((h, i) => (
-                  <div key={i} style={{ width: "3px", height: `${h}px`, background: i < 3 ? "#1A1A1A" : "#1A1A1A", borderRadius: "1px" }} />
-                ))}
-              </div>
-              <span style={{ fontSize: "10px", fontWeight: 700, color: "#1A1A1A" }}>5G</span>
-              <div className="sb-battery">
-                <div className="sb-batt-fill" />
-                <div className="sb-batt-tip" />
-              </div>
+          {/* ─ STATUS BAR ─ */}
+          <div style={S.statusBar}>
+            <span style={S.statusTime}>9:41</span>
+            <div style={S.statusRight}>
+              {[4,6,8,11].map((h,i) => <div key={i} style={{ width: 2.5, height: h, background: "#fff", borderRadius: 1 }} />)}
+              <span style={S.statusCarrier}>5G</span>
+              <div style={S.battery}><div style={S.battFill}/></div>
             </div>
           </div>
 
-          {/* WhatsApp Header — light mode */}
-          <div className="wa-header">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#008069" strokeWidth="2.5" strokeLinecap="round"><path d="M15 18l-6-6 6-6"/></svg>
-            <div className="wa-avatar">
-              <span>VN</span>
+          {/* ─ WA HEADER ─ */}
+          <div style={S.waHeader}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+            <div style={S.avatar}><span style={S.avatarText}>VN</span></div>
+            <div style={{ flex: 1 }}>
+              <div style={S.waName}>Viya Nexus AI</div>
+              <div style={S.waOnline}>online</div>
             </div>
-            <div className="wa-info">
-              <div className="wa-name">Viya Nexus AI</div>
-              <div className="wa-seen">online</div>
-            </div>
-            <div className="wa-actions">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#54656F" strokeWidth="1.8"><path d="M15.6 11.82c.18-.12.18-.42 0-.54l-7.2-4.8c-.2-.14-.4 0-.4.27v9.6c0 .27.2.41.4.27l7.2-4.8z"/></svg>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#54656F" strokeWidth="1.8"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="#54656F"><circle cx="12" cy="6" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="18" r="1.5"/></svg>
+            <div style={S.waIcons}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="rgba(255,255,255,0.5)"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
             </div>
           </div>
 
-          {/* Chat area — warm beige WhatsApp light */}
-          <div ref={chatRef} className="wa-chat">
-            {/* Date chip */}
-            <div className="date-chip"><span>TODAY</span></div>
+          {/* ─ CHAT ─ */}
+          <div ref={scrollRef} style={S.chat}>
+            <div style={S.dateChip}><span style={S.dateText}>TODAY</span></div>
+            <div style={S.encryptWrap}><span style={S.encryptText}>🔒 End-to-end encrypted</span></div>
 
-            {/* Encrypted notice */}
-            <div className="encrypt-chip">
-              <span>🔒 Messages and calls are end-to-end encrypted. Tap to learn more.</span>
-            </div>
-
-            {/* Messages */}
             <AnimatePresence>
-              {conversation.slice(0, visibleCount).map((m, i) => (
-                <motion.div key={`msg-${i}`}
-                  initial={{ opacity: 0, y: 8, scale: 0.96 }}
+              {messages.slice(0, count).map((m, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  className={`bubble ${m.from}`}>
-                  {/* Tail */}
-                  <div className={`tail ${m.from}`} />
-                  <p>{m.text}</p>
-                  <div className="bubble-meta">
-                    <span className="bubble-time">{getTime(i)}</span>
-                    {m.from === "user" && (
-                      <svg width="16" height="9" viewBox="0 0 16 11" fill="none">
-                        <path d="M1 5.5L4.5 9L11 2" stroke="#53BDEB" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M5 5.5L8.5 9L15 2" stroke="#53BDEB" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    )}
+                  transition={{ duration: 0.25 }}
+                  style={m.side === "right" ? S.bubbleR : S.bubbleL}
+                >
+                  <p style={S.msgText}>{m.text}</p>
+                  <div style={S.meta}>
+                    <MsgTime index={i} />
+                    {m.side === "right" && <Ticks />}
                   </div>
                 </motion.div>
               ))}
             </AnimatePresence>
 
-            {/* Typing indicator */}
             <AnimatePresence>
-              {isTyping && (
+              {typing && (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  className={`bubble ${typingSide}`}
-                  style={{ padding: "10px 16px" }}>
-                  <div className="typing-dots">
-                    {[0, 1, 2].map(j => (
+                  exit={{ opacity: 0 }}
+                  style={messages[count]?.side === "right" ? S.bubbleR : S.bubbleL}
+                >
+                  <div style={S.dots}>
+                    {[0,1,2].map(j => (
                       <motion.div key={j}
-                        animate={{ opacity: [0.3, 1, 0.3], y: [0, -3, 0] }}
-                        transition={{ duration: 0.6, repeat: Infinity, delay: j * 0.15 }}
-                        className="dot" />
+                        animate={{ opacity: [0.3,1,0.3], y: [0,-3,0] }}
+                        transition={{ duration: 0.6, repeat: Infinity, delay: j*0.15 }}
+                        style={S.dot} />
                     ))}
                   </div>
                 </motion.div>
@@ -170,249 +133,155 @@ export default function PhoneMockup() {
             </AnimatePresence>
           </div>
 
-          {/* Input bar */}
-          <div className="wa-input">
-            <div className="input-row">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8696A0" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-              <div className="input-field">Message</div>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8696A0" strokeWidth="1.5"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8696A0" strokeWidth="1.5"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          {/* ─ INPUT BAR ─ */}
+          <div style={S.inputBar}>
+            <div style={S.inputRow}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8696A0" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="9" r="0.5" fill="#8696A0"/><circle cx="15" cy="9" r="0.5" fill="#8696A0"/></svg>
+              <span style={S.inputPlaceholder}>Message</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8696A0" strokeWidth="1.5"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8696A0" strokeWidth="1.5"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
             </div>
-            <div className="mic-btn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 1a4 4 0 00-4 4v7a4 4 0 008 0V5a4 4 0 00-4-4zM19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/></svg>
+            <div style={S.micBtn}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 1a4 4 0 00-4 4v7a4 4 0 008 0V5a4 4 0 00-4-4z"/><path d="M19 10v2a7 7 0 01-14 0v-2" fill="none" stroke="white" strokeWidth="2"/><path d="M12 19v4M8 23h8" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"/></svg>
             </div>
           </div>
 
-          {/* Home indicator */}
-          <div className="home-ind">
-            <div className="home-bar" />
-          </div>
+          {/* ─ HOME BAR ─ */}
+          <div style={S.homeWrap}><div style={S.homeBar}/></div>
         </div>
       </div>
-
-      <style jsx>{`
-        .phone-wrapper {
-          position: relative;
-          filter: drop-shadow(0 40px 80px rgba(0,0,0,0.45)) drop-shadow(0 10px 20px rgba(0,0,0,0.25));
-        }
-
-        /* ===== IPHONE SHELL ===== */
-        .iphone-shell {
-          width: 290px;
-          border-radius: 48px;
-          background: linear-gradient(160deg, #4A4A50 0%, #2C2C30 20%, #3A3A3E 40%, #2A2A2E 60%, #3C3C40 80%, #2E2E32 100%);
-          padding: 12px;
-          position: relative;
-          box-shadow:
-            inset 0 1px 1px rgba(255,255,255,0.12),
-            inset 0 -1px 1px rgba(0,0,0,0.4),
-            0 0 0 1px rgba(0,0,0,0.5),
-            0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        /* Side buttons */
-        .btn-silent {
-          position: absolute; left: -3px; top: 100px;
-          width: 4px; height: 22px; border-radius: 0 0 0 3px;
-          background: linear-gradient(180deg, #555, #3A3A3E, #555);
-          box-shadow: -1px 0 2px rgba(0,0,0,0.3);
-        }
-        .btn-vol-up {
-          position: absolute; left: -3px; top: 140px;
-          width: 4px; height: 36px; border-radius: 3px 0 0 3px;
-          background: linear-gradient(180deg, #555, #3A3A3E, #555);
-          box-shadow: -1px 0 2px rgba(0,0,0,0.3);
-        }
-        .btn-vol-down {
-          position: absolute; left: -3px; top: 185px;
-          width: 4px; height: 36px; border-radius: 3px 0 0 3px;
-          background: linear-gradient(180deg, #555, #3A3A3E, #555);
-          box-shadow: -1px 0 2px rgba(0,0,0,0.3);
-        }
-        .btn-power {
-          position: absolute; right: -3px; top: 155px;
-          width: 4px; height: 50px; border-radius: 0 3px 3px 0;
-          background: linear-gradient(180deg, #555, #3A3A3E, #555);
-          box-shadow: 1px 0 2px rgba(0,0,0,0.3);
-        }
-
-        /* Inner screen */
-        .iphone-inner {
-          border-radius: 38px;
-          overflow: hidden;
-          background: #FFFFFF;
-          position: relative;
-        }
-
-        /* ===== NOTCH ===== */
-        .notch {
-          position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-          width: 140px; height: 30px; z-index: 30;
-          background: #1A1A1A;
-          border-radius: 0 0 22px 22px;
-          display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .notch-speaker {
-          width: 40px; height: 5px; border-radius: 3px;
-          background: #2A2A2E;
-        }
-        .notch-camera {
-          width: 10px; height: 10px; border-radius: 50%;
-          background: radial-gradient(circle at 35% 35%, #2A3545, #0C1118);
-          box-shadow: inset 0 0 2px rgba(60,100,160,0.2), 0 0 0 1.5px #222;
-        }
-
-        /* ===== STATUS BAR ===== */
-        .status-bar {
-          display: flex; justify-content: space-between; align-items: center;
-          padding: 10px 24px 4px;
-          background: #008069;
-          position: relative; z-index: 20;
-        }
-        .sb-time {
-          font-size: 14px; font-weight: 700; color: white;
-          font-family: var(--font-body); letter-spacing: 0.02em;
-        }
-        .sb-icons { display: flex; gap: 4px; align-items: center; }
-        .sb-signal { display: flex; gap: 1.5px; align-items: flex-end; }
-        .sb-signal div { background: white !important; }
-        .sb-icons span { color: white !important; }
-        .sb-battery {
-          width: 22px; height: 11px; border: 1.5px solid rgba(255,255,255,0.8);
-          border-radius: 3px; margin-left: 4px; position: relative;
-        }
-        .sb-batt-fill {
-          position: absolute; inset: 1.5px; right: 3px;
-          background: white; border-radius: 1px;
-        }
-        .sb-batt-tip {
-          position: absolute; right: -4px; top: 2.5px;
-          width: 2px; height: 5px;
-          background: rgba(255,255,255,0.6); border-radius: 0 1px 1px 0;
-        }
-
-        /* ===== WHATSAPP HEADER ===== */
-        .wa-header {
-          display: flex; align-items: center; gap: 8px;
-          padding: 8px 10px 10px;
-          background: #008069;
-        }
-        .wa-avatar {
-          width: 36px; height: 36px; border-radius: 50%;
-          background: linear-gradient(135deg, #C9910A, #E8B84B);
-          display: flex; align-items: center; justify-content: center;
-          font-size: 12px; font-weight: 800; color: #422d00;
-          flex-shrink: 0;
-        }
-        .wa-info { flex: 1; min-width: 0; }
-        .wa-name {
-          font-size: 15px; font-weight: 600; color: white;
-          line-height: 1.2; font-family: var(--font-body);
-        }
-        .wa-seen {
-          font-size: 11px; color: rgba(255,255,255,0.7);
-          font-family: var(--font-body);
-        }
-        .wa-actions { display: flex; gap: 16px; align-items: center; }
-
-        /* ===== CHAT AREA ===== */
-        .wa-chat {
-          background: #ECE5DD;
-          background-image:
-            url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.02'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2l-6 6V4zm0 4l8-8h2L40 10V8zm0 4L52 0h2L40 14v-2zm0 4L56 0h2L40 18v-2zm0 4L60 0h2L40 22v-2z'/%3E%3C/g%3E%3C/svg%3E");
-          padding: 8px 10px;
-          height: 320px;
-          overflow-y: auto;
-          display: flex; flex-direction: column; gap: 3px;
-          scroll-behavior: smooth;
-        }
-        .wa-chat::-webkit-scrollbar { width: 0; }
-
-        /* Date & encrypt chips */
-        .date-chip { text-align: center; margin: 8px 0; }
-        .date-chip span {
-          background: rgba(255,255,255,0.85); padding: 4px 14px; border-radius: 8px;
-          font-size: 10px; color: #54656F; font-family: var(--font-mono);
-          letter-spacing: 0.06em; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-        }
-        .encrypt-chip { text-align: center; margin-bottom: 10px; padding: 0 12px; }
-        .encrypt-chip span {
-          background: rgba(255,230,150,0.35); padding: 5px 10px; border-radius: 6px;
-          font-size: 8px; color: #54656F; font-family: var(--font-body);
-          display: inline-block; line-height: 1.4;
-        }
-
-        /* ===== BUBBLES ===== */
-        .bubble {
-          max-width: 82%; margin-bottom: 2px;
-          padding: 6px 10px 4px;
-          position: relative;
-          box-shadow: 0 1px 1px rgba(0,0,0,0.06);
-        }
-        .bubble.user {
-          align-self: flex-end;
-          background: #D9FDD3;
-          border-radius: 10px 3px 10px 10px;
-        }
-        .bubble.bot {
-          align-self: flex-start;
-          background: #FFFFFF;
-          border-radius: 3px 10px 10px 10px;
-        }
-        .bubble p {
-          font-size: 12px; color: #111B21;
-          line-height: 1.5; margin: 0; white-space: pre-line;
-          font-family: var(--font-body);
-        }
-        .bubble-meta {
-          display: flex; justify-content: flex-end; align-items: center;
-          gap: 3px; margin-top: 2px;
-        }
-        .bubble-time { font-size: 9px; color: #667781; }
-
-        /* Bubble tail */
-        .tail { display: none; }
-
-        /* Typing dots */
-        .typing-dots { display: flex; gap: 5px; align-items: center; }
-        .dot {
-          width: 6px; height: 6px; border-radius: 50%;
-          background: #8696A0;
-        }
-
-        /* ===== INPUT BAR ===== */
-        .wa-input {
-          display: flex; align-items: center; gap: 6px;
-          padding: 6px 8px;
-          background: #F0F2F5;
-        }
-        .input-row {
-          flex: 1; display: flex; align-items: center; gap: 8px;
-          background: #FFFFFF; border-radius: 24px;
-          padding: 8px 12px;
-        }
-        .input-field {
-          flex: 1; font-size: 14px; color: #8696A0;
-          font-family: var(--font-body);
-        }
-        .mic-btn {
-          width: 40px; height: 40px; border-radius: 50%;
-          background: #008069; display: flex; align-items: center; justify-content: center;
-          box-shadow: 0 2px 6px rgba(0,128,105,0.25); cursor: pointer;
-          flex-shrink: 0;
-        }
-
-        /* ===== HOME INDICATOR ===== */
-        .home-ind {
-          padding: 6px 0 4px;
-          display: flex; justify-content: center;
-          background: #F0F2F5;
-        }
-        .home-bar {
-          width: 100px; height: 4px; border-radius: 2px;
-          background: rgba(0,0,0,0.15);
-        }
-      `}</style>
     </div>
   );
 }
+
+/* ──────────── STYLES ──────────── */
+const S = {
+  wrapper: {
+    position: "relative",
+    filter: "drop-shadow(0 30px 60px rgba(0,0,0,0.5)) drop-shadow(0 0 80px rgba(201,145,10,0.06))",
+  },
+
+  // FRAME
+  frame: {
+    width: 300, borderRadius: 50, position: "relative",
+    background: "linear-gradient(165deg, #52525A 0%, #2E2E32 25%, #3E3E42 50%, #28282C 75%, #3A3A3E 100%)",
+    padding: 10,
+    boxShadow: "inset 0 1px 1px rgba(255,255,255,0.15), inset 0 -1px 1px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,0,0,0.6)",
+  },
+  sideBtn: {
+    position: "absolute", width: 3.5, borderRadius: 2,
+    background: "linear-gradient(180deg, #606068, #3A3A3E, #606068)",
+    boxShadow: "-1px 0 3px rgba(0,0,0,0.4)",
+  },
+
+  // SCREEN
+  screen: { borderRadius: 42, overflow: "hidden", background: "#000" },
+
+  // NOTCH
+  notch: {
+    position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)",
+    width: 130, height: 30, background: "#000", borderRadius: "0 0 20px 20px",
+    zIndex: 30, display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+  },
+  notchSpeaker: { width: 38, height: 4.5, borderRadius: 3, background: "#1C1C1E" },
+  notchCam: {
+    width: 10, height: 10, borderRadius: "50%",
+    background: "radial-gradient(circle at 40% 35%, #1A2535, #080C12)",
+    boxShadow: "inset 0 0 2px rgba(50,80,140,0.2), 0 0 0 1.5px #1A1A1E",
+  },
+
+  // STATUS BAR
+  statusBar: {
+    display: "flex", justifyContent: "space-between", alignItems: "center",
+    padding: "12px 26px 4px", background: "#075E54",
+  },
+  statusTime: { fontSize: 14, fontWeight: 700, color: "#fff", fontFamily: "var(--font-body)" },
+  statusRight: { display: "flex", gap: 3, alignItems: "center" },
+  statusCarrier: { fontSize: 10, fontWeight: 700, color: "#fff", marginLeft: 3 },
+  battery: {
+    width: 22, height: 10, border: "1.5px solid rgba(255,255,255,0.7)",
+    borderRadius: 3, marginLeft: 4, position: "relative",
+  },
+  battFill: { position: "absolute", top: 2, left: 2, right: 4, bottom: 2, background: "#fff", borderRadius: 1 },
+
+  // WA HEADER
+  waHeader: {
+    display: "flex", alignItems: "center", gap: 8,
+    padding: "8px 12px 10px", background: "#075E54",
+  },
+  avatar: {
+    width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
+    background: "linear-gradient(135deg, #C9910A, #E8B84B)",
+    display: "flex", alignItems: "center", justifyContent: "center",
+    boxShadow: "0 2px 8px rgba(201,145,10,0.35)",
+  },
+  avatarText: { fontSize: 12, fontWeight: 800, color: "#422d00" },
+  waName: { fontSize: 15, fontWeight: 600, color: "#fff", lineHeight: 1.2 },
+  waOnline: { fontSize: 11, color: "rgba(255,255,255,0.65)" },
+  waIcons: { display: "flex", gap: 16, alignItems: "center" },
+
+  // CHAT
+  chat: {
+    background: "#ECE5DD",
+    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000' fill-opacity='0.018'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")`,
+    padding: "8px 8px", height: 330, overflowY: "auto",
+    display: "flex", flexDirection: "column", gap: 2,
+    scrollBehavior: "smooth", scrollbarWidth: "none",
+    msOverflowStyle: "none",
+  },
+
+  // DATE / ENCRYPT
+  dateChip: { textAlign: "center", margin: "8px 0" },
+  dateText: {
+    background: "rgba(255,255,255,0.9)", padding: "4px 14px", borderRadius: 8,
+    fontSize: 10, color: "#54656F", fontFamily: "var(--font-mono)",
+    letterSpacing: "0.06em", boxShadow: "0 1px 2px rgba(0,0,0,0.06)",
+  },
+  encryptWrap: { textAlign: "center", marginBottom: 10, padding: "0 14px" },
+  encryptText: {
+    background: "rgba(255,220,120,0.3)", padding: "5px 12px", borderRadius: 6,
+    fontSize: 8.5, color: "#54656F", lineHeight: "1.4", display: "inline-block",
+  },
+
+  // BUBBLES
+  bubbleR: {
+    maxWidth: "80%", alignSelf: "flex-end", marginBottom: 2,
+    background: "#D9FDD3", borderRadius: "10px 4px 10px 10px",
+    padding: "6px 8px 3px", boxShadow: "0 1px 1px rgba(0,0,0,0.05)",
+  },
+  bubbleL: {
+    maxWidth: "80%", alignSelf: "flex-start", marginBottom: 2,
+    background: "#fff", borderRadius: "4px 10px 10px 10px",
+    padding: "6px 8px 3px", boxShadow: "0 1px 1px rgba(0,0,0,0.05)",
+  },
+  msgText: {
+    fontSize: 11.5, color: "#111B21", lineHeight: 1.45, margin: 0,
+    whiteSpace: "pre-line", wordBreak: "break-word",
+  },
+  meta: { display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 3, marginTop: 1 },
+  time: { fontSize: 8, color: "#667781" },
+
+  // TYPING
+  dots: { display: "flex", gap: 4, alignItems: "center", padding: "4px 6px" },
+  dot: { width: 6, height: 6, borderRadius: "50%", background: "#8696A0" },
+
+  // INPUT
+  inputBar: {
+    display: "flex", alignItems: "center", gap: 6,
+    padding: "6px 8px", background: "#F0F2F5",
+  },
+  inputRow: {
+    flex: 1, display: "flex", alignItems: "center", gap: 10,
+    background: "#fff", borderRadius: 24, padding: "9px 14px",
+  },
+  inputPlaceholder: { flex: 1, fontSize: 14, color: "#8696A0" },
+  micBtn: {
+    width: 38, height: 38, borderRadius: "50%", flexShrink: 0,
+    background: "#075E54", display: "flex", alignItems: "center", justifyContent: "center",
+    boxShadow: "0 2px 6px rgba(7,94,84,0.3)",
+  },
+
+  // HOME
+  homeWrap: { padding: "8px 0 6px", display: "flex", justifyContent: "center", background: "#F0F2F5" },
+  homeBar: { width: 110, height: 4, borderRadius: 2, background: "rgba(0,0,0,0.12)" },
+};
