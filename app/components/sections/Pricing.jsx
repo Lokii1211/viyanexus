@@ -55,6 +55,24 @@ const plans = [
     popular: false,
     color: "#8B5CF6",
   },
+  {
+    name: "Custom",
+    tagline: "Unique needs? We build it.",
+    features: [
+      "Fully bespoke solution",
+      "Any combination of services",
+      "Multi-platform integrations",
+      "Custom AI model training",
+      "Dedicated project manager",
+      "White-label options",
+      "Flexible payment terms",
+      "SLA-backed support",
+    ],
+    cta: "Let\u0027s Talk",
+    popular: false,
+    color: "#F59E0B",
+    isCustom: true,
+  },
 ];
 
 export default function Pricing() {
@@ -87,13 +105,16 @@ export default function Pricing() {
               className="pricing-card"
               style={{
                 background: p.popular ? "#0F1219" : "#0A0C12",
-                border: p.popular ? "1px solid rgba(201,145,10,0.25)" : "1px solid rgba(255,255,255,0.04)",
+                border: p.isCustom ? "1px dashed rgba(245,158,11,0.3)" : p.popular ? "1px solid rgba(201,145,10,0.25)" : "1px solid rgba(255,255,255,0.04)",
                 padding: "32px 24px", display: "flex", flexDirection: "column",
                 position: "relative", overflow: "hidden", transition: "all 0.4s ease",
               }}
             >
               {p.popular && (
                 <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: "linear-gradient(to right, #C9910A, #E8B84B)" }} />
+              )}
+              {p.isCustom && (
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: "linear-gradient(to right, #F59E0B, #FBBF24)" }} />
               )}
               {p.popular && (
                 <div style={{

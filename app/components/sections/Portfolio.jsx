@@ -1,8 +1,9 @@
 "use client";
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { ArrowRight, TrendingUp } from "lucide-react";
+import { ArrowRight, TrendingUp, ExternalLink } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const WA_LINK = "https://wa.me/919003360494?text=Hi%20Viya%20Nexus%2C%20I%20want%20to%20see%20more%20case%20studies";
 
@@ -13,6 +14,7 @@ const projects = [
     desc: "Full WhatsApp automation — menu browsing, order intake, reservations & promos 24/7.",
     quote: "We went from 180 manual replies a day to just 12. The bot handles everything now.",
     quoteName: "Karthik R., Founder",
+    caseStudy: "/case-studies/spiceroute-restaurant",
     metrics: [
       { label: "Manual Replies", before: "180+/day", after: "12/day" },
       { label: "Response Time", before: "45 min", after: "4 sec" },
@@ -27,6 +29,7 @@ const projects = [
     desc: "Landing page + WhatsApp pipeline. Instant lead capture, auto follow-up, site-visit booking.",
     quote: "Our bookings doubled. Leads get a reply in 2 minutes now instead of 8 hours.",
     quoteName: "Priya S., Director",
+    caseStudy: "/case-studies/emerald-real-estate",
     metrics: [
       { label: "Lead Response", before: "8 hours", after: "2 min" },
       { label: "Bookings/Mo", before: "18", after: "42" },
@@ -40,6 +43,7 @@ const projects = [
     desc: "WhatsApp AI for course FAQ, lead qualification & enrollment automation.",
     quote: "I save 2 hours every day and my enrollments jumped 40% in the first month.",
     quoteName: "Arjun M., Coach",
+    caseStudy: "/case-studies/fitcoach-online",
     metrics: [
       { label: "Enrollments", before: "22/mo", after: "31/mo" },
       { label: "Time Saved", before: "0", after: "2 hrs/day" },
@@ -53,6 +57,7 @@ const projects = [
     desc: "Voice AI receptionist handling calls, appointment booking & prescription refills across 3 branches.",
     quote: "We were missing 35% of calls. Now our AI handles 96% of them perfectly.",
     quoteName: "Dr. Meena K., CMO",
+    caseStudy: "/case-studies",
     metrics: [
       { label: "Missed Calls", before: "35%", after: "2%" },
       { label: "Staff Hours", before: "8 hrs/day", after: "1 hr/day" },
@@ -66,6 +71,7 @@ const projects = [
     desc: "Abandoned cart recovery, order tracking & returns via WhatsApp chatbot.",
     quote: "We recovered ₹6.8L in abandoned carts in the first quarter alone.",
     quoteName: "Sneha T., CEO",
+    caseStudy: "/case-studies",
     metrics: [
       { label: "Cart Recovery", before: "3%", after: "19%" },
       { label: "Support Tickets", before: "200/day", after: "40/day" },
@@ -127,16 +133,17 @@ export default function Portfolio() {
             <motion.h2 initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }} className="section-title">
               Real Results. Real Revenue.
             </motion.h2>
-            <motion.a initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.3 }}
-              href={WA_LINK} target="_blank" rel="noopener noreferrer" className="cta-btn-animate"
-              style={{
-                border: "1px solid rgba(255,255,255,0.1)", color: "white",
-                padding: "10px 20px", fontFamily: "var(--font-mono)", fontSize: "10px",
-                textTransform: "uppercase", letterSpacing: "0.1em", textDecoration: "none",
-                display: "inline-flex", alignItems: "center", gap: "6px",
-              }}>
-              View All Cases <ArrowRight size={11} />
-            </motion.a>
+            <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.3 }}>
+              <Link href="/case-studies" className="cta-btn-animate"
+                style={{
+                  border: "1px solid rgba(255,255,255,0.1)", color: "white",
+                  padding: "10px 20px", fontFamily: "var(--font-mono)", fontSize: "10px",
+                  textTransform: "uppercase", letterSpacing: "0.1em", textDecoration: "none",
+                  display: "inline-flex", alignItems: "center", gap: "6px",
+                }}>
+                View All Case Studies <ArrowRight size={11} />
+              </Link>
+            </motion.div>
           </div>
         </div>
 
@@ -214,19 +221,34 @@ export default function Portfolio() {
                 </div>
 
                 {/* CTA */}
-                <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
-                  className="cta-btn-animate"
-                  style={{
-                    display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
-                    width: "100%", padding: "10px",
-                    background: `${p.accent}10`, border: `1px solid ${p.accent}20`,
-                    fontFamily: "var(--font-mono)", fontSize: "10px",
-                    textTransform: "uppercase", letterSpacing: "0.1em",
-                    color: p.accent, textDecoration: "none",
-                    transition: "all 0.3s ease",
-                  }}>
-                  Get Similar Results <ArrowRight size={10} />
-                </a>
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <Link href={p.caseStudy || "/case-studies"}
+                    className="cta-btn-animate"
+                    style={{
+                      display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+                      flex: 1, padding: "10px",
+                      background: `${p.accent}10`, border: `1px solid ${p.accent}20`,
+                      fontFamily: "var(--font-mono)", fontSize: "10px",
+                      textTransform: "uppercase", letterSpacing: "0.1em",
+                      color: p.accent, textDecoration: "none",
+                      transition: "all 0.3s ease",
+                    }}>
+                    Read Case Study <ExternalLink size={10} />
+                  </Link>
+                  <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
+                    className="cta-btn-animate"
+                    style={{
+                      display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+                      flex: 1, padding: "10px",
+                      background: "transparent", border: "1px solid rgba(255,255,255,0.08)",
+                      fontFamily: "var(--font-mono)", fontSize: "10px",
+                      textTransform: "uppercase", letterSpacing: "0.1em",
+                      color: "rgba(255,255,255,0.4)", textDecoration: "none",
+                      transition: "all 0.3s ease",
+                    }}>
+                    Get Results <ArrowRight size={10} />
+                  </a>
+                </div>
               </div>
             </motion.div>
           ))}

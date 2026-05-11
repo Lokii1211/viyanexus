@@ -1,15 +1,21 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowRight, Home, Briefcase, BarChart3, Settings, DollarSign } from "lucide-react";
+import { Menu, X, ArrowRight, Home, Briefcase, BarChart3, Settings, DollarSign, FileText, BookOpen } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
-const navLinks = [
+const sectionLinks = [
   { label: "Home", href: "#home", icon: Home, sectionId: "home" },
   { label: "Services", href: "#services", icon: Briefcase, sectionId: "services" },
   { label: "Results", href: "#portfolio", icon: BarChart3, sectionId: "portfolio" },
   { label: "Process", href: "#process", icon: Settings, sectionId: "process" },
   { label: "Pricing", href: "#pricing", icon: DollarSign, sectionId: "pricing" },
+];
+
+const pageLinks = [
+  { label: "Case Studies", href: "/case-studies", icon: FileText },
+  { label: "Blog", href: "/blog", icon: BookOpen },
 ];
 
 const WA_LINK = "https://wa.me/919003360494?text=Hi%20Viya%20Nexus%2C%20I%20want%20to%20explore%20automation%20for%20my%20business";
@@ -22,7 +28,7 @@ export default function Navbar() {
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 50);
     const scrollPos = window.scrollY + 120;
-    const sections = navLinks.map(l => ({
+    const sections = sectionLinks.map(l => ({
       label: l.label,
       el: document.getElementById(l.sectionId),
     })).filter(s => s.el);
@@ -67,7 +73,7 @@ export default function Navbar() {
       >
         <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px", display: "flex", justifyContent: "space-between", alignItems: "center", height: "64px" }}>
           {/* Logo */}
-          <a href="#home" onClick={() => { setActive("Home"); setMobileOpen(false); }}
+          <a href="/" onClick={() => { setActive("Home"); setMobileOpen(false); }}
             style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
             <div style={{
               width: "34px", height: "34px", borderRadius: "50%", overflow: "hidden",
@@ -80,33 +86,39 @@ export default function Navbar() {
             <span style={{ fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: 700, letterSpacing: "-0.01em", color: "#C9910A" }}>VIYA NEXUS</span>
           </a>
 
-          {/* Desktop Links — subtle underline indicator, no background */}
+          {/* Desktop Links */}
           <div className="nav-links-desktop">
-            {navLinks.map((link) => (
+            {sectionLinks.map((link) => (
               <a key={link.label} href={link.href}
                 onClick={() => setActive(link.label)}
                 style={{
                   fontFamily: "var(--font-mono)", textTransform: "uppercase",
                   letterSpacing: "0.12em", fontSize: "10px", textDecoration: "none",
                   color: active === link.label ? "#C9910A" : "rgba(255,255,255,0.4)",
-                  padding: "8px 12px",
-                  position: "relative",
-                  transition: "color 0.3s ease",
+                  padding: "8px 10px", position: "relative", transition: "color 0.3s ease",
                 }}>
                 {link.label}
-                {/* Animated underline — slides between active links */}
                 {active === link.label && (
-                  <motion.div
-                    layoutId="nav-underline"
-                    style={{
-                      position: "absolute", bottom: "-2px", left: "12px", right: "12px",
-                      height: "2px", borderRadius: "1px",
-                      background: "#C9910A",
-                    }}
-                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                  />
+                  <motion.div layoutId="nav-underline"
+                    style={{ position: "absolute", bottom: "-2px", left: "10px", right: "10px", height: "2px", borderRadius: "1px", background: "#C9910A" }}
+                    transition={{ type: "spring", stiffness: 500, damping: 35 }} />
                 )}
               </a>
+            ))}
+
+            {/* Divider */}
+            <div style={{ width: "1px", height: "16px", background: "rgba(255,255,255,0.08)", margin: "0 4px" }} />
+
+            {/* Page links (Blog, Case Studies) */}
+            {pageLinks.map((link) => (
+              <Link key={link.label} href={link.href}
+                style={{
+                  fontFamily: "var(--font-mono)", textTransform: "uppercase",
+                  letterSpacing: "0.12em", fontSize: "10px", textDecoration: "none",
+                  color: "rgba(255,255,255,0.4)", padding: "8px 10px", transition: "color 0.3s ease",
+                }}>
+                {link.label}
+              </Link>
             ))}
           </div>
 
@@ -149,7 +161,8 @@ export default function Navbar() {
             }}
           >
             <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 40px", gap: "4px" }}>
-              {navLinks.map((link, i) => {
+              {/* Section links */}
+              {sectionLinks.map((link, i) => {
                 const Icon = link.icon;
                 return (
                   <motion.a key={link.label} href={link.href}
@@ -173,8 +186,35 @@ export default function Navbar() {
                   </motion.a>
                 );
               })}
+
+              {/* Divider */}
+              <div style={{ height: "1px", background: "rgba(201,145,10,0.1)", margin: "8px 0" }} />
+
+              {/* Page links */}
+              {pageLinks.map((link, i) => {
+                const Icon = link.icon;
+                return (
+                  <motion.div key={link.label}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.36 + i * 0.06 }}>
+                    <Link href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      style={{
+                        display: "flex", alignItems: "center", gap: "14px",
+                        padding: "16px 0", textDecoration: "none",
+                        borderBottom: "1px solid rgba(255,255,255,0.04)",
+                      }}>
+                      <Icon size={18} style={{ color: "rgba(255,255,255,0.2)" }} />
+                      <span style={{ fontSize: "20px", fontFamily: "var(--font-display)", fontWeight: 600, color: "rgba(255,255,255,0.6)" }}>{link.label}</span>
+                      <ArrowRight size={14} style={{ marginLeft: "auto", color: "rgba(255,255,255,0.15)" }} />
+                    </Link>
+                  </motion.div>
+                );
+              })}
             </div>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.45 }}
+
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.55 }}
               style={{ padding: "0 40px" }}>
               <a href={WA_LINK} target="_blank" rel="noopener noreferrer"
                 onClick={() => setMobileOpen(false)} className="cta-btn-animate cta-pulse"
