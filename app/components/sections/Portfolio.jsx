@@ -75,16 +75,20 @@ const projects = [
   },
 ];
 
-/* Animated number counter */
+/* Animated number counter — SSR-safe with fallback */
 function AnimatedStat({ value, color, isInView }) {
   const numMatch = value.match(/[\d.]+/);
   const num = numMatch ? parseFloat(numMatch[0]) : 0;
   const prefix = value.slice(0, value.indexOf(numMatch?.[0] || ""));
   const suffix = value.slice((numMatch?.index || 0) + (numMatch?.[0]?.length || 0));
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(num); // SSR: final value
+  const hasAnimatedRef = useRef(false);
+
+  // Client: reset to 0
+  useEffect(() => { if (!hasAnimatedRef.current) setCurrent(0); }, []);
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView || hasAnimatedRef.current) return;
     let frame;
     const duration = 1500;
     const start = performance.now();
@@ -92,10 +96,13 @@ function AnimatedStat({ value, color, isInView }) {
       const progress = Math.min((now - start) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       setCurrent(eased * num);
-      if (progress < 1) frame = requestAnimationFrame(animate);
+      if (progress < 1) { frame = requestAnimationFrame(animate); }
+      else { setCurrent(num); hasAnimatedRef.current = true; }
     };
     frame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frame);
+    // Fallback
+    const fb = setTimeout(() => { if (!hasAnimatedRef.current) { setCurrent(num); hasAnimatedRef.current = true; } }, 3000);
+    return () => { cancelAnimationFrame(frame); clearTimeout(fb); };
   }, [isInView, num]);
 
   return (

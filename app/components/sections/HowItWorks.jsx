@@ -133,7 +133,7 @@ export default function HowItWorks() {
             Start Your 7-Day Transformation <ArrowRight size={14} />
           </a>
           <p style={{ fontFamily: "var(--font-mono)", fontSize: "9px", color: "rgba(255,255,255,0.2)", marginTop: "12px", textTransform: "uppercase", letterSpacing: "0.1em" }}>
-            Free strategy call • No credit card • Cancel anytime
+            Free strategy call • No credit card • 30-day support included
           </p>
         </motion.div>
       </div>

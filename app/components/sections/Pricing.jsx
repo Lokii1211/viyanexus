@@ -25,7 +25,7 @@ const plans = [
     name: "Growth",
     tagline: "Most popular for scaling SMEs",
     features: [
-      "WhatsApp AI + Instagram DM Bot",
+      "WhatsApp AI + Website Landing Page",
       "Unlimited conversations",
       "Lead qualification flows",
       "CRM integration",

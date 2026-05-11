@@ -9,25 +9,60 @@ const stats = [
   { value: 30, prefix: "", suffix: "+", label: "Businesses transformed", sub: "Restaurants, real estate, coaching, D2C" },
 ];
 
+/* Robust CountUp: SSR renders final value, client animates with fallback */
 function CountUp({ target, prefix, suffix, inView }) {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(target); // SSR: show final value
+  const hasAnimatedRef = useRef(false);
+
   useEffect(() => {
-    if (!inView) return;
-    let start = 0;
-    const step = target / 90;
-    const interval = setInterval(() => {
-      start += step;
-      if (start >= target) { setCount(target); clearInterval(interval); }
-      else setCount(target < 10 ? Math.round(start * 10) / 10 : Math.floor(start));
-    }, 16);
-    return () => clearInterval(interval);
+    // Client: reset to 0, then animate
+    if (!hasAnimatedRef.current) {
+      setCount(0);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!inView || hasAnimatedRef.current) return;
+
+    let frame;
+    const duration = 1500;
+    const startTime = performance.now();
+
+    const animate = (now) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = eased * target;
+      setCount(target < 10 ? Math.round(current * 10) / 10 : Math.floor(current));
+      if (progress < 1) {
+        frame = requestAnimationFrame(animate);
+      } else {
+        setCount(target);
+        hasAnimatedRef.current = true;
+      }
+    };
+
+    frame = requestAnimationFrame(animate);
+
+    // Fallback: force final value after 3s
+    const fallback = setTimeout(() => {
+      if (!hasAnimatedRef.current) {
+        setCount(target);
+        hasAnimatedRef.current = true;
+      }
+    }, 3000);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      clearTimeout(fallback);
+    };
   }, [inView, target]);
+
   return <>{prefix}{count}{suffix}</>;
 }
 
 export default function StatsCounter() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isInView = useInView(ref, { once: true, margin: "-40px" });
 
   return (
     <section style={{ position: "relative", padding: "80px 0", background: "#06080D", overflow: "hidden" }} ref={ref}>
@@ -38,7 +73,8 @@ export default function StatsCounter() {
         <div className="stats-grid">
           {stats.map((stat, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, delay: i * 0.1 }}
-              style={{ textAlign: "center" }}>
+              style={{ textAlign: "center" }}
+              data-stat-final={`${stat.prefix}${stat.value}${stat.suffix}`}>
               <span style={{ display: "block", fontSize: "clamp(40px, 5vw, 64px)", fontFamily: "var(--font-display)", fontWeight: 700, color: "#E8B84B", lineHeight: 1, marginBottom: "12px" }}>
                 <CountUp target={stat.value} prefix={stat.prefix} suffix={stat.suffix} inView={isInView} />
               </span>

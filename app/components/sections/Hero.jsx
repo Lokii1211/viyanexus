@@ -7,27 +7,55 @@ import HeroMesh from "../ui/HeroMesh";
 
 const WA_LINK = "https://wa.me/919003360494?text=Hi%20Viya%20Nexus%2C%20I%20want%20to%20book%20a%20free%20strategy%20call";
 
+/* Robust CountUp: starts immediately, has 2s fallback, works with/without IntersectionObserver */
+function HeroCountUp({ target, suffix = "" }) {
+  const [value, setValue] = useState(target); // SSR: render final value immediately
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    // Reset to 0 then animate up (client-side only)
+    setValue(0);
+    let frame;
+    const duration = 2000;
+    const startTime = performance.now();
+
+    const animate = (now) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setValue(Math.floor(eased * target));
+      if (progress < 1) {
+        frame = requestAnimationFrame(animate);
+      } else {
+        setValue(target);
+        setHasAnimated(true);
+      }
+    };
+
+    // Small delay for visual effect, then animate
+    const timer = setTimeout(() => {
+      frame = requestAnimationFrame(animate);
+    }, 600);
+
+    // Fallback: snap to final value after 3s no matter what
+    const fallback = setTimeout(() => {
+      if (!hasAnimated) setValue(target);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(fallback);
+      cancelAnimationFrame(frame);
+    };
+  }, [target]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return <>{value}{suffix}</>;
+}
+
 export default function Hero() {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    let frame;
-    const target = 50;
-    const duration = 2000;
-    const start = performance.now();
-    const animate = (now) => {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      setCount(Math.floor(progress * target));
-      if (progress < 1) frame = requestAnimationFrame(animate);
-    };
-    const timer = setTimeout(() => { frame = requestAnimationFrame(animate); }, 800);
-    return () => { clearTimeout(timer); cancelAnimationFrame(frame); };
-  }, []);
 
   return (
     <section id="home" ref={ref} style={{
@@ -137,16 +165,18 @@ export default function Hero() {
               </a>
             </motion.div>
 
-            {/* Stats */}
+            {/* Stats — with robust count-up + noscript fallback via data attrs */}
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
               style={{ display: "flex", flexWrap: "wrap", gap: "28px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
               {[
-                { val: `₹${count}L+`, label: "Revenue Generated" },
-                { val: "30+", label: "Businesses Automated" },
+                { target: 50, prefix: "₹", suffix: "L+", label: "Revenue Generated" },
+                { target: 30, prefix: "", suffix: "+", label: "Businesses Automated" },
                 { val: "7-Day", label: "Delivery" },
               ].map((s, i) => (
-                <div key={i}>
-                  <div style={{ fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: 900, color: i === 0 ? "#E8B84B" : "white" }}>{s.val}</div>
+                <div key={i} data-stat-final={s.val || `${s.prefix}${s.target}${s.suffix}`}>
+                  <div style={{ fontFamily: "var(--font-display)", fontSize: "28px", fontWeight: 900, color: i === 0 ? "#E8B84B" : "white" }}>
+                    {s.val ? s.val : <>{s.prefix}<HeroCountUp target={s.target} suffix={s.suffix} /></>}
+                  </div>
                   <div style={{ fontFamily: "var(--font-mono)", fontSize: "8px", color: "rgba(255,255,255,0.25)", textTransform: "uppercase", letterSpacing: "0.1em" }}>{s.label}</div>
                 </div>
               ))}
