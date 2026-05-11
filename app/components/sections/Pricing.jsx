@@ -7,6 +7,24 @@ const WA_LINK = "https://wa.me/919003360494?text=Hi%20Viya%20Nexus%2C%20I%20want
 
 const plans = [
   {
+    name: "Custom",
+    tagline: "Unique needs? We build it.",
+    features: [
+      "Fully bespoke solution",
+      "Any combination of services",
+      "Multi-platform integrations",
+      "Custom AI model training",
+      "Dedicated project manager",
+      "White-label options",
+      "Flexible payment terms",
+      "SLA-backed support",
+    ],
+    cta: "Let's Talk",
+    popular: false,
+    color: "#F59E0B",
+    isCustom: true,
+  },
+  {
     name: "Starter",
     tagline: "Perfect for testing the waters",
     features: [
@@ -55,24 +73,6 @@ const plans = [
     popular: false,
     color: "#8B5CF6",
   },
-  {
-    name: "Custom",
-    tagline: "Unique needs? We build it.",
-    features: [
-      "Fully bespoke solution",
-      "Any combination of services",
-      "Multi-platform integrations",
-      "Custom AI model training",
-      "Dedicated project manager",
-      "White-label options",
-      "Flexible payment terms",
-      "SLA-backed support",
-    ],
-    cta: "Let\u0027s Talk",
-    popular: false,
-    color: "#F59E0B",
-    isCustom: true,
-  },
 ];
 
 export default function Pricing() {
@@ -96,7 +96,7 @@ export default function Pricing() {
           </motion.p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))", gap: "16px", alignItems: "stretch" }}>
+        <div className="pricing-grid">
           {plans.map((p, i) => (
             <motion.div key={i}
               initial={{ opacity: 0, y: 30 }}
@@ -168,6 +168,18 @@ export default function Pricing() {
       </div>
 
       <style jsx>{`
+        .pricing-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 16px;
+          align-items: stretch;
+        }
+        @media (min-width: 640px) {
+          .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 1024px) {
+          .pricing-grid { grid-template-columns: repeat(4, 1fr); }
+        }
         .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
       `}</style>
     </section>
