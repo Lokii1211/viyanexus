@@ -4,6 +4,8 @@ import Footer from "./components/layout/Footer";
 import Hero from "./components/sections/Hero";
 import TrustBar from "./components/sections/TrustBar";
 import Problem from "./components/sections/Problem";
+import About from "./components/sections/About";
+import ClientMarquee from "./components/sections/ClientMarquee";
 import Services from "./components/sections/Services";
 import StatsCounter from "./components/sections/StatsCounter";
 import Portfolio from "./components/sections/Portfolio";
@@ -25,7 +27,9 @@ export default function Home() {
       <main>
         <Hero />
         <TrustBar />
+        <ClientMarquee />
         <Problem />
+        <About />
         <Services />
         <StatsCounter />
         <Portfolio />
