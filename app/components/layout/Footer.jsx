@@ -28,7 +28,7 @@ const footerLinks = {
   Contact: [
     { label: "WhatsApp Us", href: "https://wa.me/919003360494" },
     { label: "nexus@viya.ai", href: "mailto:nexus@viya.ai" },
-    { label: "Chennai, India 🇮🇳", href: null },
+    { label: "Coimbatore, India 🇮🇳", href: null },
   ],
 };
 

@@ -10,7 +10,7 @@ const values = [
 ];
 
 const stats = [
-  { value: "2024", label: "Founded" },
+  { value: "2026", label: "Founded" },
   { value: "30+", label: "Projects Delivered" },
   { value: "₹50L+", label: "Revenue Generated for Clients" },
   { value: "4.9★", label: "Client Rating" },
@@ -36,7 +36,7 @@ export default function About() {
           </motion.h2>
           <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.2 }}
             className="section-sub" style={{ margin: "0 auto" }}>
-            Viya Nexus is a premium AI automation agency born in Chennai. We help Indian businesses replace manual chaos with intelligent systems that work 24/7.
+            Viya Nexus is a premium AI automation agency born in Coimbatore. We help Indian businesses replace manual chaos with intelligent systems that work 24/7.
           </motion.p>
         </div>
 
@@ -123,13 +123,13 @@ export default function About() {
               <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                 <Rocket size={14} style={{ color: "#C9910A" }} />
                 <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-                  Chennai, India 🇮🇳
+                  Coimbatore, India 🇮🇳
                 </span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                 <Calendar size={14} style={{ color: "#C9910A" }} />
                 <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-                  Since 2024
+                  Since 2026
                 </span>
               </div>
             </div>

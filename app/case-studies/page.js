@@ -12,7 +12,7 @@ const cases = [
     slug: "spiceroute-restaurant",
     client: "SpiceRoute",
     industry: "RESTAURANT CHAIN",
-    location: "Chennai",
+    location: "Coimbatore",
     headline: "From 180 manual WhatsApp replies/day to 12. ₹50L+ annual revenue recovered.",
     stats: [
       { value: "94%", label: "Fewer manual replies" },

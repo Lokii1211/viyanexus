@@ -162,7 +162,7 @@ export default function Pricing() {
           style={{ textAlign: "center", marginTop: "32px" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "8px 16px", background: "rgba(22,163,74,0.06)", border: "1px solid rgba(22,163,74,0.12)" }}>
             <Shield size={12} style={{ color: "#16A34A" }} />
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: "9px", color: "#16A34A", textTransform: "uppercase", letterSpacing: "0.08em" }}>Custom pricing based on your needs — book a free call to get your quote</span>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "9px", color: "#16A34A", textTransform: "uppercase", letterSpacing: "0.08em" }}>Maintenance starts at just ₹500/mo — custom pricing based on your needs</span>
           </div>
         </motion.div>
       </div>

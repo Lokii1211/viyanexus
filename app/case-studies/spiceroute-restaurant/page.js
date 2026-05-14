@@ -2,7 +2,7 @@ import ArticleLayout from "@/app/components/layout/ArticleLayout";
 
 export const metadata = {
   title: "SpiceRoute Case Study — 94% Fewer Manual Replies | Viya Nexus",
-  description: "How a 4-location Chennai restaurant chain went from 180 manual WhatsApp replies/day to 12, recovered ₹50L+ annual revenue, and got their evenings back.",
+  description: "How a 4-location Coimbatore restaurant chain went from 180 manual WhatsApp replies/day to 12, recovered ₹50L+ annual revenue, and got their evenings back.",
   alternates: { canonical: "https://viyanexus.vercel.app/case-studies/spiceroute-restaurant" },
 };
 
@@ -11,7 +11,7 @@ export default function SpiceRouteCaseStudy() {
     <ArticleLayout tag="RESTAURANT CHAIN" date="May 2026" readTime="8 min"
       title="SpiceRoute: From 180 Manual WhatsApp Replies/Day to 12. ₹50L+ Revenue Recovered.">
 
-      <p><strong>Client:</strong> SpiceRoute — a 4-location South Indian restaurant chain in Chennai, founded in 2018 by Karthik Rajan. Annual revenue: ₹3.2 Cr. Staff: 85 employees.</p>
+      <p><strong>Client:</strong> SpiceRoute — a 4-location South Indian restaurant chain in Coimbatore, founded in 2018 by Karthik Rajan. Annual revenue: ₹3.2 Cr. Staff: 85 employees.</p>
 
       <h2>The Challenge</h2>
 

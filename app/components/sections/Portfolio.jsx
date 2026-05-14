@@ -10,7 +10,7 @@ const WA_LINK = "https://wa.me/919003360494?text=Hi%20Viya%20Nexus%2C%20I%20want
 const projects = [
   {
     tag: "RESTAURANT", image: "/portfolio/restaurant.png",
-    name: "Chennai Restaurant Chain",
+    name: "Coimbatore Restaurant Chain",
     desc: "Full WhatsApp automation — menu browsing, order intake, reservations & promos 24/7.",
     quote: "We went from 180 manual replies a day to just 12. The bot handles everything now.",
     quoteName: "Karthik R., Founder",
