@@ -18,6 +18,7 @@ import FinalCTA from "./components/sections/FinalCTA";
 import ScrollProgress from "./components/ui/ScrollProgress";
 import WhatsAppButton from "./components/ui/WhatsAppButton";
 import SocialProofToast from "./components/ui/SocialProofToast";
+import ScrollToTop from "./components/ui/ScrollToTop";
 
 export default function Home() {
   return (
@@ -43,6 +44,7 @@ export default function Home() {
       <Footer />
       <WhatsAppButton />
       <SocialProofToast />
+      <ScrollToTop />
     </>
   );
 }
