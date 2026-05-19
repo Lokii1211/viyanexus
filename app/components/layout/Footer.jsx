@@ -89,7 +89,7 @@ export default function Footer() {
               </div>
               <span style={{ fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: 600, color: "white", textTransform: "uppercase", letterSpacing: "-0.01em" }}>VIYA NEXUS</span>
             </div>
-            <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", letterSpacing: "0.02em", color: "#71717a", lineHeight: 1.8, marginBottom: "20px" }}>
+            <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", letterSpacing: "0.02em", color: "#9CA3AF", lineHeight: 1.8, marginBottom: "20px" }}>
               India&apos;s premium AI automation agency. We build WhatsApp bots, voice AI agents, and growth systems for businesses that are serious about scaling.
             </p>
 
@@ -123,19 +123,19 @@ export default function Footer() {
                       {link.href ? (
                         link.isRoute ? (
                           <Link href={link.href}
-                            style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "#71717a", textDecoration: "none", transition: "color 0.3s" }}>
+                            style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "#9CA3AF", textDecoration: "none", transition: "color 0.3s" }}>
                             {link.label}
                           </Link>
                         ) : (
                           <a href={link.href}
                             target={link.href.startsWith("http") || link.href.startsWith("mailto") ? "_blank" : undefined}
                             rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                            style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "#71717a", textDecoration: "none", transition: "color 0.3s" }}>
+                            style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "#9CA3AF", textDecoration: "none", transition: "color 0.3s" }}>
                             {link.label}
                           </a>
                         )
                       ) : (
-                        <span style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "#71717a" }}>{link.label}</span>
+                        <span style={{ fontFamily: "var(--font-mono)", fontSize: "11px", color: "#9CA3AF" }}>{link.label}</span>
                       )}
                     </li>
                   ))}
@@ -147,11 +147,11 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: "32px", marginTop: "48px", display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "16px" }}>
-          <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "#71717a" }}>© 2026 VIYA NEXUS. ALL RIGHTS RESERVED.</p>
+          <p style={{ fontFamily: "var(--font-mono)", fontSize: "10px", color: "#9CA3AF" }}>© 2026 VIYA NEXUS. ALL RIGHTS RESERVED.</p>
           <div style={{ display: "flex", gap: "24px", fontFamily: "var(--font-mono)", fontSize: "10px" }}>
-            <span style={{ color: "rgba(255,255,255,0.15)" }}>Privacy Policy</span>
-            <span style={{ color: "rgba(255,255,255,0.15)" }}>Terms of Service</span>
-            <span style={{ color: "rgba(255,255,255,0.08)" }}>// BORN IN INDIA. BUILT FOR THE WORLD.</span>
+            <span style={{ color: "rgba(255,255,255,0.35)" }}>Privacy Policy</span>
+            <span style={{ color: "rgba(255,255,255,0.35)" }}>Terms of Service</span>
+            <span style={{ color: "rgba(255,255,255,0.2)" }}>// BORN IN INDIA. BUILT FOR THE WORLD.</span>
           </div>
         </div>
       </div>

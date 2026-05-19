@@ -6,7 +6,8 @@ export default function PageLoader() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1800);
+    // Shorter duration to avoid blocking LCP measurement
+    const timer = setTimeout(() => setLoading(false), 800);
     return () => clearTimeout(timer);
   }, []);
 
@@ -16,20 +17,23 @@ export default function PageLoader() {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+          aria-hidden="true"
           style={{
             position: "fixed", inset: 0, zIndex: 9999,
             background: "#06080D",
             display: "flex", flexDirection: "column",
             alignItems: "center", justifyContent: "center",
             gap: "20px",
+            /* Allow content behind to render for LCP */
+            pointerEvents: "none",
           }}
         >
           {/* Logo mark */}
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
             style={{
               width: "48px", height: "48px", borderRadius: "50%",
               border: "2px solid rgba(201,145,10,0.3)",
@@ -44,7 +48,7 @@ export default function PageLoader() {
             {/* Spinning ring */}
             <motion.div
               animate={{ rotate: 360 }}
-              transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
               style={{
                 position: "absolute", inset: "-4px",
                 borderRadius: "50%",
@@ -63,7 +67,7 @@ export default function PageLoader() {
             <motion.div
               initial={{ width: "0%" }}
               animate={{ width: "100%" }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
+              transition={{ duration: 0.7, ease: "easeInOut" }}
               style={{
                 height: "100%",
                 background: "linear-gradient(90deg, #C9910A, #E8B84B)",
