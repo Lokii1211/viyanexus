@@ -75,9 +75,12 @@ export default function StatsCounter() {
             <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, delay: i * 0.1 }}
               style={{ textAlign: "center" }}
               data-stat-final={`${stat.prefix}${stat.value}${stat.suffix}`}>
-              <span style={{ display: "block", fontSize: "clamp(40px, 5vw, 64px)", fontFamily: "var(--font-display)", fontWeight: 700, color: "#E8B84B", lineHeight: 1, marginBottom: "12px" }}>
-                <CountUp target={stat.value} prefix={stat.prefix} suffix={stat.suffix} inView={isInView} />
-              </span>
+              <div style={{ position: "relative", display: "inline-block" }}>
+                <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "80px", height: "80px", background: "radial-gradient(circle, rgba(232,184,75,0.08) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
+                <span style={{ display: "block", fontSize: "clamp(40px, 5vw, 64px)", fontFamily: "var(--font-display)", fontWeight: 700, color: "#E8B84B", lineHeight: 1, marginBottom: "12px", position: "relative" }}>
+                  <CountUp target={stat.value} prefix={stat.prefix} suffix={stat.suffix} inView={isInView} />
+                </span>
+              </div>
               <span style={{ display: "block", fontSize: "14px", fontWeight: 600, color: "#F0EDE8", marginBottom: "4px" }}>{stat.label}</span>
               <span style={{ display: "block", fontSize: "11px", color: "#4A4845", fontFamily: "var(--font-mono)", letterSpacing: "0.08em" }}>{stat.sub}</span>
             </motion.div>

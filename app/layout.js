@@ -102,6 +102,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="min-h-screen bg-[#0A0C12] text-[#F0EDE8] font-[family-name:var(--font-body)] antialiased">
+        <div className="grain-overlay" aria-hidden="true" />
         {children}
       </body>
     </html>
