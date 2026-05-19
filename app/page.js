@@ -19,6 +19,7 @@ import ScrollProgress from "./components/ui/ScrollProgress";
 import WhatsAppButton from "./components/ui/WhatsAppButton";
 import SocialProofToast from "./components/ui/SocialProofToast";
 import ScrollToTop from "./components/ui/ScrollToTop";
+import PageLoader from "./components/ui/PageLoader";
 
 export default function Home() {
   return (
@@ -45,6 +46,7 @@ export default function Home() {
       <WhatsAppButton />
       <SocialProofToast />
       <ScrollToTop />
+      <PageLoader />
     </>
   );
 }

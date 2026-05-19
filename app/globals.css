@@ -337,6 +337,34 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ===== FOCUS VISIBLE — GOLD RING ===== */
+:focus-visible {
+  outline: 2px solid #C9910A;
+  outline-offset: 2px;
+}
+
+/* ===== NAV LINK HOVER GLOW ===== */
+.nav-links-desktop a:hover {
+  color: #E8B84B !important;
+  text-shadow: 0 0 12px rgba(201,145,10,0.35);
+}
+
+/* ===== SECTION DIVIDER (reusable) ===== */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,145,10,0.08), transparent);
+  margin: 0;
+}
+
+/* ===== IMAGE HOVER ZOOM ===== */
+.img-zoom {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.img-zoom:hover {
+  transform: scale(1.05);
+}
+
 /* ===== REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -344,4 +372,6 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  html { scroll-behavior: auto; }
 }
+
